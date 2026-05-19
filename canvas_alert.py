@@ -45,28 +45,34 @@ def get_course_items(course_id):
     """返回一门课的所有作业和 Quiz（有 due date 的）。"""
     items = []
 
-    for a in get_all_pages(f"{CANVAS_URL}/api/v1/courses/{course_id}/assignments?per_page=100"):
-        if not isinstance(a, dict) or not a.get("due_at"):
-            continue
-        items.append({
-            "id":    f"assignment_{a['id']}",
-            "title": a.get("name", "未知作业"),
-            "type":  "作业",
-            "due":   a["due_at"],
-        })
+    try:
+        for a in get_all_pages(f"{CANVAS_URL}/api/v1/courses/{course_id}/assignments?per_page=100"):
+            if not isinstance(a, dict) or not a.get("due_at"):
+                continue
+            items.append({
+                "id":    f"assignment_{a['id']}",
+                "title": a.get("name", "未知作业"),
+                "type":  "作业",
+                "due":   a["due_at"],
+            })
+    except requests.exceptions.HTTPError as e:
+        print(f"[跳过] 课程 {course_id} 作业接口错误：{e}")
 
-    for q in get_all_pages(f"{CANVAS_URL}/api/v1/courses/{course_id}/quizzes?per_page=100"):
-        if not isinstance(q, dict):
-            continue
-        due = q.get("due_at") or q.get("lock_at")
-        if not due:
-            continue
-        items.append({
-            "id":    f"quiz_{q['id']}",
-            "title": q.get("title", "未知 Quiz"),
-            "type":  "Quiz",
-            "due":   due,
-        })
+    try:
+        for q in get_all_pages(f"{CANVAS_URL}/api/v1/courses/{course_id}/quizzes?per_page=100"):
+            if not isinstance(q, dict):
+                continue
+            due = q.get("due_at") or q.get("lock_at")
+            if not due:
+                continue
+            items.append({
+                "id":    f"quiz_{q['id']}",
+                "title": q.get("title", "未知 Quiz"),
+                "type":  "Quiz",
+                "due":   due,
+            })
+    except requests.exceptions.HTTPError as e:
+        print(f"[跳过] 课程 {course_id} Quiz 接口错误：{e}")
 
     return items
 
