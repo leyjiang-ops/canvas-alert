@@ -1,44 +1,39 @@
-name: 检查 Approaching Due（每 10 分钟）
+name: 定时提醒（每 5 分钟）
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
-  workflow_dispatch:   # 支持手动触发，方便测试
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
 
-# 防止同一时刻多个实例并发运行，避免 notified.json 写冲突
 concurrency:
-  group: check-approaching
+  group: canvas-state
   cancel-in-progress: false
 
 jobs:
   check:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # 允许把更新后的 notified.json 推回仓库
+      contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
-      - name: Check approaching due
+      - name: Fire scheduled reminders (local only, zero Canvas API)
         env:
           CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
         run: python canvas_alert.py --check
 
-      - name: Save notified state to repo
+      - name: Save state
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add notified.json
-          # 只有文件真的有变化才提交，避免无意义的空 commit
-          git diff --cached --quiet || git commit -m "chore: update notified state [skip ci]"
+          git add deadlines.json
+          git diff --cached --quiet || git commit -m "chore: update reminded state [skip ci]"
           git push
