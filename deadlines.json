@@ -1,5 +1,82 @@
 {
   "_meta": {
     "last_stream_check": "2026-05-29T18:44:31.048083+00:00"
+  },
+  "assignment_407457": {
+    "id": "assignment_407457",
+    "raw_id": 407457,
+    "course_id": 89879,
+    "course": "棒球",
+    "title": "2026春季学期体育理论作业",
+    "type": "作业",
+    "due": "2026-05-31T15:59:00Z",
+    "remind_at": "2026-05-31T13:59:00+00:00",
+    "reminded": false
+  },
+  "quiz_76375": {
+    "id": "quiz_76375",
+    "raw_id": 76375,
+    "course_id": 89879,
+    "course": "棒球",
+    "title": "2026春季学期体育理论作业",
+    "type": "Quiz",
+    "due": "2026-05-31T15:59:00Z",
+    "remind_at": "2026-05-31T13:59:00+00:00",
+    "reminded": false
+  },
+  "assignment_404172": {
+    "id": "assignment_404172",
+    "raw_id": 404172,
+    "course_id": 89351,
+    "course": "形势与政策",
+    "title": "新一轮科技革命背景下人文与科技的双向赋能",
+    "type": "作业",
+    "due": "2026-05-31T15:59:59Z",
+    "remind_at": "2026-05-31T13:59:59+00:00",
+    "reminded": false
+  },
+  "assignment_412112": {
+    "id": "assignment_412112",
+    "raw_id": 412112,
+    "course_id": 92355,
+    "course": "ECE2300JSU2026-1",
+    "title": "Homework 1",
+    "type": "作业",
+    "due": "2026-05-31T15:59:59Z",
+    "remind_at": "2026-05-31T13:59:59+00:00",
+    "reminded": false
+  },
+  "assignment_411890": {
+    "id": "assignment_411890",
+    "raw_id": 411890,
+    "course_id": 92366,
+    "course": "ECE2810JSU2026",
+    "title": "PA1_report",
+    "type": "作业",
+    "due": "2026-06-07T15:59:59Z",
+    "remind_at": "2026-06-07T13:59:59+00:00",
+    "reminded": false
+  },
+  "assignment_412262": {
+    "id": "assignment_412262",
+    "raw_id": 412262,
+    "course_id": 92366,
+    "course": "ECE2810JSU2026",
+    "title": "PA1_code",
+    "type": "作业",
+    "due": "2026-06-07T15:59:59Z",
+    "remind_at": "2026-06-07T13:59:59+00:00",
+    "reminded": false
+  },
+  "assignment_412777": {
+    "id": "assignment_412777",
+    "raw_id": 412777,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "HW2",
+    "type": "作业",
+    "due": "2026-06-05T15:59:59Z",
+    "remind_at": "2026-06-05T13:59:59+00:00",
+    "reminded": false
   }
 }
