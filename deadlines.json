@@ -78,5 +78,16 @@
     "due": "2026-06-05T15:59:59Z",
     "remind_at": "2026-06-05T13:59:59+00:00",
     "reminded": false
+  },
+  "assignment_412866": {
+    "id": "assignment_412866",
+    "raw_id": 412866,
+    "course_id": 92355,
+    "course": "ECE2300JSU2026-1",
+    "title": "Homework 2",
+    "type": "作业",
+    "due": "2026-06-07T15:59:59Z",
+    "remind_at": "2026-06-07T13:59:59+00:00",
+    "reminded": false
   }
 }
