@@ -95,8 +95,32 @@ def check_submission(course_id, raw_id) -> bool:
         state = sub.get("workflow_state", "unsubmitted")
         return state != "unsubmitted" or bool(sub.get("submitted_at"))
     except Exception as e:
-        print(f"[warn] 查询提交状态失败：{e}")
+        print(f"[warn] 查询作业提交状态失败：{e}")
         return False
+
+def check_quiz_submission(course_id, raw_id) -> bool:
+    """按需查单个 Quiz 的提交状态。"""
+    try:
+        resp = requests.get(
+            f"{CANVAS_URL}/api/v1/courses/{course_id}/quizzes/{raw_id}/submission",
+            headers=auth(), timeout=15,
+        )
+        resp.raise_for_status()
+        subs = resp.json().get("quiz_submissions", [])
+        if not subs:
+            return False
+        # workflow_state: "complete" / "pending_review" = 已做；"untaken" = 未做
+        return subs[-1].get("workflow_state") in ("complete", "pending_review")
+    except Exception as e:
+        print(f"[warn] 查询 Quiz 提交状态失败：{e}")
+        return False
+
+def is_submitted(item: dict) -> bool:
+    """统一入口：根据 id 前缀选择正确的检测函数。"""
+    if item["id"].startswith("assignment_"):
+        return check_submission(item["course_id"], item["raw_id"])
+    else:
+        return check_quiz_submission(item["course_id"], item["raw_id"])
 
 def parse_dt(s):
     return datetime.fromisoformat(s.replace("Z", "+00:00"))
@@ -146,8 +170,11 @@ def make_remind_at(due_str: str) -> str:
     return remind.isoformat()
 
 def register_item(deadlines, iid, raw_id, course_id, course,
-                  title, item_type, due_str) -> bool:
-    """写入新条目，返回 True 表示确为新发现。"""
+                  title, item_type, due_str, submitted=False) -> bool:
+    """
+    写入新条目，返回 True 表示确为新发现。
+    submitted=True（发现时已提交）则直接标记 reminded=True，永不触发提醒。
+    """
     if iid in deadlines:
         return False
     deadlines[iid] = {
@@ -159,7 +186,7 @@ def register_item(deadlines, iid, raw_id, course_id, course,
         "type":      item_type,
         "due":       due_str,
         "remind_at": make_remind_at(due_str),   # ← 发现时立即算好
-        "reminded":  False,
+        "reminded":  submitted,                  # ← 已提交视为已提醒
     }
     return True
 
@@ -254,10 +281,17 @@ def stream_check():
             if not raw_id or not due_str or parse_dt(due_str) <= now:
                 continue
             iid = f"assignment_{raw_id}"
-            if register_item(deadlines, iid, raw_id, course_id,
-                             get_course_name(course_id), title, "作业", due_str):
-                new_items.append(deadlines[iid])
-                print(f"[stream] 新作业：{title}")
+            if iid not in deadlines:
+                # 新发现的作业先查一次提交状态
+                submitted = check_submission(course_id, raw_id)
+                register_item(deadlines, iid, raw_id, course_id,
+                              get_course_name(course_id), title, "作业",
+                              due_str, submitted=submitted)
+                if submitted:
+                    print(f"[stream] 新作业已提交，静默记录：{title}")
+                else:
+                    new_items.append(deadlines[iid])
+                    print(f"[stream] 新作业：{title}")
 
         elif event_type in ("Quiz", "Quizzes::Quiz"):
             quiz    = event.get("quiz") or {}
@@ -292,10 +326,15 @@ def full_sync():
             if parse_dt(item["due"]) <= now:
                 continue
             iid = item["id"]
+            # get_course_items 已带 submitted 字段，直接用
             if register_item(deadlines, iid, item["raw_id"], cid,
-                             cname, item["title"], item["type"], item["due"]):
-                new_items.append(deadlines[iid])
-                print(f"[full_sync] 补漏：{item['title']}")
+                             cname, item["title"], item["type"], item["due"],
+                             submitted=item["submitted"]):
+                if item["submitted"]:
+                    print(f"[full_sync] 已提交，静默记录：{item['title']}")
+                else:
+                    new_items.append(deadlines[iid])
+                    print(f"[full_sync] 补漏：{item['title']}")
 
     save_deadlines(deadlines)
     notify_new_items(new_items)
@@ -326,10 +365,7 @@ def check_reminders():
     # 只在真正触发时才调用 Canvas API 查提交状态
     to_notify = []
     for item in due_items:
-        if item["id"].startswith("assignment_"):
-            submitted = check_submission(item["course_id"], item["raw_id"])
-        else:
-            submitted = False
+        submitted = is_submitted(item)
 
         deadlines[item["id"]]["reminded"] = True
         changed = True
@@ -370,10 +406,7 @@ def daily_summary():
 
     all_items = []
     for item in items_raw:
-        if item["id"].startswith("assignment_"):
-            submitted = check_submission(item["course_id"], item["raw_id"])
-        else:
-            submitted = False
+        submitted = is_submitted(item)
         all_items.append({**item, "submitted": submitted,
                           "due_dt": parse_dt(item["due"])})
 
