@@ -2,28 +2,23 @@ name: 每日作业汇总（10:00 CST）
 
 on:
   schedule:
-    # 北京时间 10:00 = UTC 02:00
     - cron: "0 2 * * *"
-  workflow_dispatch:   # 支持手动触发，方便测试
+  workflow_dispatch:
 
 jobs:
   daily-summary:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt
 
       - name: Run daily summary
         env:
-          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          USERS_CONFIG: ${{ secrets.USERS_CONFIG }}
         run: python canvas_alert.py --daily

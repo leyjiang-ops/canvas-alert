@@ -26,14 +26,13 @@ jobs:
 
       - name: Full sync from Canvas
         env:
-          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          USERS_CONFIG: ${{ secrets.USERS_CONFIG }}
         run: python canvas_alert.py --sync
 
       - name: Save state
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add deadlines.json
+          git add deadlines_*.json
           git diff --cached --quiet || git commit -m "chore: full sync [skip ci]"
           git push

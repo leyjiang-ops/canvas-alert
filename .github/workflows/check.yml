@@ -5,7 +5,6 @@ on:
     - cron: "*/5 * * * *"
   workflow_dispatch:
 
-# 同一时刻只跑一个实例，避免 deadlines.json 写冲突
 concurrency:
   group: canvas-state
   cancel-in-progress: false
@@ -25,26 +24,20 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # ── Step 1：检查 activity_stream，发现新作业/quiz 立即通知 ──────────────
-      # 只调用一个轻量 Canvas API（activity_stream），新内容几乎实时感知
       - name: Stream check (detect new assignments)
         env:
-          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          USERS_CONFIG: ${{ secrets.USERS_CONFIG }}
         run: python canvas_alert.py --stream
 
-      # ── Step 2：读本地 deadlines.json，到点就提醒，零 Canvas API ───────────
-      - name: Fire scheduled reminders (local only)
+      - name: Fire scheduled reminders
         env:
-          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          USERS_CONFIG: ${{ secrets.USERS_CONFIG }}
         run: python canvas_alert.py --check
 
-      # ── 两步完成后一次性保存状态 ─────────────────────────────────────────────
       - name: Save state
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add deadlines.json
+          git add deadlines_*.json
           git diff --cached --quiet || git commit -m "chore: update state [skip ci]"
           git push
