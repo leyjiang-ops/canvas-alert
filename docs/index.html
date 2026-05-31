@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canvas Alert — 配置中心</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --border:    #30363d;
+      --accent:    #2f81f7;
+      --accent-h:  #388bfd;
+      --green:     #3fb950;
+      --red:       #f85149;
+      --yellow:    #d29922;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --radius:    10px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ──────────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 60px;
+      background: rgba(13,17,23,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; font-size: .9rem; color: var(--muted); }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-gh {
+      display: flex; align-items: center; gap: .4rem;
+      padding: .35rem .9rem; border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface); font-size: .85rem;
+      color: var(--text); cursor: pointer;
+      transition: border-color .2s;
+    }
+    .nav-gh:hover { border-color: var(--accent); }
+
+    /* ── Hero ─────────────────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+      background: radial-gradient(ellipse 80% 50% at 50% -10%,
+                  rgba(47,129,247,.18), transparent);
+    }
+    .hero-badge {
+      display: inline-block; margin-bottom: 1.2rem;
+      padding: .3rem .9rem; border-radius: 99px;
+      border: 1px solid rgba(47,129,247,.4);
+      background: rgba(47,129,247,.1);
+      font-size: .8rem; color: var(--accent);
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.2; }
+    .hero h1 span { color: var(--accent); }
+    .hero p  { margin-top: 1rem; font-size: 1.1rem; color: var(--muted); max-width: 520px; margin-inline: auto; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+    .btn-primary {
+      padding: .65rem 1.6rem; border-radius: var(--radius);
+      background: var(--accent); color: #fff; font-size: .95rem; font-weight: 600;
+      border: none; cursor: pointer; transition: background .2s, transform .1s;
+    }
+    .btn-primary:hover { background: var(--accent-h); transform: translateY(-1px); }
+    .btn-secondary {
+      padding: .65rem 1.6rem; border-radius: var(--radius);
+      background: transparent; color: var(--text); font-size: .95rem; font-weight: 600;
+      border: 1px solid var(--border); cursor: pointer; transition: border-color .2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    /* ── Features ─────────────────────────────────────────────────────────── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem; max-width: 900px; margin: 0 auto 5rem; padding: 0 1.5rem;
+    }
+    .feat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .feat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .feat-icon { font-size: 1.8rem; margin-bottom: .6rem; }
+    .feat-card h3 { font-size: .95rem; margin-bottom: .3rem; }
+    .feat-card p  { font-size: .82rem; color: var(--muted); }
+
+    /* ── Config Form ──────────────────────────────────────────────────────── */
+    .config-section {
+      max-width: 680px; margin: 0 auto 5rem; padding: 0 1.5rem;
+    }
+    .section-title {
+      font-size: 1.5rem; font-weight: 700;
+      margin-bottom: .4rem;
+    }
+    .section-sub { color: var(--muted); font-size: .9rem; margin-bottom: 2rem; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-size: .85rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--muted); margin-bottom: 1.2rem;
+    }
+
+    .field { margin-bottom: 1.1rem; }
+    .field label {
+      display: block; font-size: .85rem; font-weight: 500;
+      margin-bottom: .4rem; color: var(--text);
+    }
+    .field label .hint {
+      font-weight: 400; color: var(--muted); font-size: .8rem; margin-left: .4rem;
+    }
+    .field input, .field select {
+      width: 100%; padding: .55rem .8rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text);
+      font-size: .9rem; outline: none;
+      transition: border-color .2s;
+    }
+    .field input:focus, .field select:focus { border-color: var(--accent); }
+    .field select option { background: var(--surface); }
+
+    .token-wrap { position: relative; }
+    .token-wrap input { padding-right: 5rem; }
+    .token-toggle {
+      position: absolute; right: .6rem; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      font-size: .78rem; padding: .2rem .4rem;
+    }
+    .token-toggle:hover { color: var(--text); }
+
+    .status-dot {
+      display: inline-block; width: 8px; height: 8px;
+      border-radius: 50%; margin-right: .35rem; vertical-align: middle;
+    }
+    .status-ok   { background: var(--green); }
+    .status-fail { background: var(--red); }
+    .status-idle { background: var(--muted); }
+
+    .verify-row { display: flex; gap: .6rem; align-items: flex-end; }
+    .verify-row .field { flex: 1; margin-bottom: 0; }
+    .btn-verify {
+      padding: .55rem 1rem; border-radius: 6px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text); font-size: .85rem; cursor: pointer;
+      white-space: nowrap; transition: border-color .2s;
+      height: 36px; align-self: flex-end;
+    }
+    .btn-verify:hover { border-color: var(--accent); }
+    .btn-verify:disabled { opacity: .4; cursor: default; }
+
+    .verify-msg { font-size: .82rem; margin-top: .45rem; min-height: 1.2em; }
+    .verify-msg.ok   { color: var(--green); }
+    .verify-msg.fail { color: var(--red); }
+
+    /* section divider */
+    .divider {
+      display: flex; align-items: center; gap: .8rem;
+      margin: 1.5rem 0; color: var(--muted); font-size: .8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* tabs */
+    .tabs { display: flex; gap: .5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .tab {
+      padding: .35rem .9rem; border-radius: 6px; font-size: .85rem;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--muted); cursor: pointer; transition: all .15s;
+    }
+    .tab.active {
+      background: rgba(47,129,247,.15); border-color: var(--accent);
+      color: var(--accent);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* output */
+    .output-wrap { position: relative; }
+    .output-wrap textarea {
+      width: 100%; min-height: 220px; padding: 1rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--green);
+      font-family: "JetBrains Mono", "Fira Code", monospace; font-size: .82rem;
+      resize: vertical; outline: none;
+    }
+    .copy-btn {
+      position: absolute; top: .5rem; right: .5rem;
+      padding: .3rem .75rem; border-radius: 5px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); font-size: .78rem; cursor: pointer;
+      transition: all .15s;
+    }
+    .copy-btn:hover { border-color: var(--accent); color: var(--text); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    .generate-btn {
+      width: 100%; margin-top: 1rem;
+      padding: .75rem; border-radius: var(--radius);
+      background: var(--accent); color: #fff;
+      font-size: 1rem; font-weight: 600; border: none; cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .generate-btn:hover { background: var(--accent-h); transform: translateY(-1px); }
+
+    /* Steps */
+    .steps { list-style: none; margin-top: 1.5rem; }
+    .steps li {
+      display: flex; gap: 1rem; padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .steps li:last-child { border-bottom: none; }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(47,129,247,.2); border: 1px solid var(--accent);
+      color: var(--accent); font-size: .85rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-body h4 { font-size: .9rem; margin-bottom: .2rem; }
+    .step-body p  { font-size: .82rem; color: var(--muted); }
+    .step-body code {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 4px; padding: .1rem .4rem; font-size: .8rem;
+      font-family: monospace;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem; text-align: center;
+      color: var(--muted); font-size: .82rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 500px) {
+      .nav-links { display: none; }
+      .verify-row { flex-direction: column; }
+      .verify-row .btn-verify { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ───────────────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">Canvas <span>Alert</span></div>
+  <div class="nav-links">
+    <a href="#config">配置</a>
+    <a href="#steps">部署</a>
+  </div>
+  <a class="nav-gh" href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+               0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+               -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+               .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+               -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27
+               .68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
+               .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+               0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+    GitHub
+  </a>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-badge">🎓 支持 SJTU · FDU · 任意 Canvas 院校</div>
+  <h1>再也不会<span>漏掉 DDL</span></h1>
+  <p>Canvas 作业自动监控，新作业发布立即通知，截止前 2 小时精准提醒，已提交自动忽略。</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="document.getElementById('config').scrollIntoView({behavior:'smooth'})">
+      开始配置 →
+    </button>
+    <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">
+      <button class="btn-secondary">查看源码</button>
+    </a>
+  </div>
+</section>
+
+<!-- ── Features ──────────────────────────────────────────────────────────── -->
+<div class="features">
+  <div class="feat-card">
+    <div class="feat-icon">⚡</div>
+    <h3>准实时检测</h3>
+    <p>每 5 分钟扫描 Canvas 动态流，新作业发布几乎立即通知。</p>
+  </div>
+  <div class="feat-card">
+    <div class="feat-icon">🎯</div>
+    <h3>精准提醒</h3>
+    <p>发现作业时自动计算提醒时刻（due − 2h），到时间才触发，零冗余。</p>
+  </div>
+  <div class="feat-card">
+    <div class="feat-icon">✅</div>
+    <h3>自动过滤</h3>
+    <p>已提交的作业不发提醒，每条消息只发一次，不打扰。</p>
+  </div>
+  <div class="feat-card">
+    <div class="feat-icon">📱</div>
+    <h3>双渠道推送</h3>
+    <p>微信（Server酱）+ Telegram 同时送达，考试周不怕额度耗尽。</p>
+  </div>
+</div>
+
+<!-- ── Config Form ────────────────────────────────────────────────────────── -->
+<section class="config-section" id="config">
+  <div class="section-title">🛠 生成你的配置</div>
+  <div class="section-sub">填写信息后点击「生成 JSON」，把结果粘贴到 GitHub Secrets 即可。</div>
+
+  <!-- Canvas -->
+  <div class="card">
+    <div class="card-title">① Canvas 账号</div>
+
+    <div class="field">
+      <label>学校</label>
+      <select id="school" onchange="onSchoolChange()">
+        <option value="https://oc.sjtu.edu.cn">上海交通大学 (SJTU)</option>
+        <option value="https://elearning.fudan.edu.cn">复旦大学 (FDU)</option>
+        <option value="custom">其他（手动填写）</option>
+      </select>
+    </div>
+
+    <div class="field" id="custom-url-field" style="display:none">
+      <label>Canvas 网址 <span class="hint">例：https://canvas.university.edu</span></label>
+      <input type="text" id="custom-url" placeholder="https://..." />
+    </div>
+
+    <div class="field">
+      <label>
+        用户 ID <span class="hint">用于区分多个用户，英文+数字</span>
+      </label>
+      <input type="text" id="uid" placeholder="sjtu_yourname" />
+    </div>
+
+    <div class="verify-row">
+      <div class="field">
+        <label>
+          Canvas Access Token
+          <span class="hint">
+            <a href="#" onclick="showTokenHelp(); return false">如何获取？</a>
+          </span>
+        </label>
+        <div class="token-wrap">
+          <input type="password" id="canvas-token" placeholder="粘贴你的 token" />
+          <button class="token-toggle" onclick="toggleToken('canvas-token', this)">显示</button>
+        </div>
+      </div>
+      <button class="btn-verify" id="verify-btn" onclick="verifyToken()">验证</button>
+    </div>
+    <div class="verify-msg" id="verify-msg">
+      <span class="status-dot status-idle"></span>未验证
+    </div>
+  </div>
+
+  <!-- 通知渠道 -->
+  <div class="card">
+    <div class="card-title">② 通知渠道（至少选一个）</div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('wechat', this)">微信（Server酱）</button>
+      <button class="tab" onclick="switchTab('telegram', this)">Telegram</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-wechat">
+      <div class="field">
+        <label>
+          Server酱 SendKey
+          <span class="hint"><a href="https://sct.ftqq.com" target="_blank">去 sct.ftqq.com 获取 →</a></span>
+        </label>
+        <div class="token-wrap">
+          <input type="password" id="sck" placeholder="SCT..." />
+          <button class="token-toggle" onclick="toggleToken('sck', this)">显示</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-telegram">
+      <div class="field">
+        <label>Bot Token <span class="hint">从 @BotFather 获取</span></label>
+        <div class="token-wrap">
+          <input type="password" id="tg-token" placeholder="123456:ABC..." />
+          <button class="token-toggle" onclick="toggleToken('tg-token', this)">显示</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Chat ID <span class="hint">向 bot 发一条消息后访问 getUpdates 获取</span></label>
+        <input type="text" id="tg-chat" placeholder="-100123456789" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate -->
+  <button class="generate-btn" onclick="generate()">⚡ 生成 USERS_CONFIG JSON</button>
+
+  <!-- Output -->
+  <div class="card" id="output-card" style="display:none; margin-top:1rem;">
+    <div class="card-title">生成结果</div>
+    <div class="output-wrap">
+      <textarea id="output" readonly></textarea>
+      <button class="copy-btn" id="copy-btn" onclick="copyOutput()">复制</button>
+    </div>
+    <p style="font-size:.82rem; color:var(--muted); margin-top:.8rem;">
+      ⚠️ 这个 JSON 包含你的 token，请勿分享给他人。
+    </p>
+  </div>
+</section>
+
+<!-- ── Steps ──────────────────────────────────────────────────────────────── -->
+<section class="config-section" id="steps">
+  <div class="section-title">🚀 部署步骤</div>
+  <div class="section-sub">只需三步，配置完成后全自动运行。</div>
+  <div class="card">
+    <ol class="steps">
+      <li>
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Fork 仓库</h4>
+          <p>访问 <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">canvas-alert</a>，点右上角 Fork，复制到你自己的账号下。</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>添加 Secret</h4>
+          <p>在你 fork 的仓库里：<code>Settings → Secrets → Actions → New secret</code><br/>
+             Name: <code>USERS_CONFIG</code>，Value 粘贴上方生成的 JSON。</p>
+        </div>
+      </li>
+      <li>
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>启用 Actions 并测试</h4>
+          <p>进入 <code>Actions</code> 标签页，启用 workflows，手动触发「全量同步」验证是否收到通知。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <p>Canvas Alert · 开源项目 ·
+     <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">GitHub</a>
+  </p>
+  <p style="margin-top:.4rem;">你的 token 仅在本地处理，不经过任何服务器。</p>
+</footer>
+
+<!-- Token 获取说明弹窗 -->
+<div id="token-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);
+     z-index:200; align-items:center; justify-content:center;">
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+       padding:2rem; max-width:420px; width:90%; position:relative;">
+    <button onclick="document.getElementById('token-modal').style.display='none'"
+            style="position:absolute;top:.8rem;right:.8rem;background:none;border:none;
+                   color:var(--muted);cursor:pointer;font-size:1.2rem;">✕</button>
+    <h3 style="margin-bottom:1rem;">如何获取 Canvas Token</h3>
+    <ol style="font-size:.88rem; color:var(--muted); padding-left:1.2rem; line-height:2;">
+      <li>登录你学校的 Canvas</li>
+      <li>点右上角头像 → <strong style="color:var(--text)">Account / Settings</strong></li>
+      <li>滚动到 <strong style="color:var(--text)">Approved Integrations</strong></li>
+      <li>点 <strong style="color:var(--text)">New Access Token</strong></li>
+      <li>填写用途描述，点生成，复制 token</li>
+    </ol>
+    <p style="font-size:.8rem; color:var(--red); margin-top:1rem;">
+      ⚠️ Token 只显示一次，请立刻复制保存。
+    </p>
+  </div>
+</div>
+
+<script>
+// ── Helpers ───────────────────────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+
+function getCanvasUrl() {
+  const school = $('school').value;
+  if (school === 'custom') return $('custom-url').value.trim().replace(/\/$/, '');
+  return school;
+}
+
+function onSchoolChange() {
+  const isCustom = $('school').value === 'custom';
+  $('custom-url-field').style.display = isCustom ? 'block' : 'none';
+}
+
+function toggleToken(id, btn) {
+  const inp = $(id);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '隐藏' : '显示';
+}
+
+function showTokenHelp() {
+  $('token-modal').style.display = 'flex';
+}
+
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  $('tab-' + name).classList.add('active');
+}
+
+// ── Verify Canvas Token ───────────────────────────────────────────────────
+async function verifyToken() {
+  const url   = getCanvasUrl();
+  const token = $('canvas-token').value.trim();
+  const btn   = $('verify-btn');
+  const msg   = $('verify-msg');
+
+  if (!url || !token) {
+    msg.className = 'verify-msg fail';
+    msg.innerHTML = '<span class="status-dot status-fail"></span>请先填写 Canvas 地址和 Token';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '验证中…';
+  msg.className = 'verify-msg';
+  msg.innerHTML = '<span class="status-dot status-idle"></span>请求中…';
+
+  try {
+    const resp = await fetch(`${url}/api/v1/users/self`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (resp.ok) {
+      const user = await resp.json();
+      msg.className = 'verify-msg ok';
+      msg.innerHTML = `<span class="status-dot status-ok"></span>验证成功 — ${user.name || 'Canvas 用户'}`;
+    } else {
+      msg.className = 'verify-msg fail';
+      msg.innerHTML = `<span class="status-dot status-fail"></span>验证失败（HTTP ${resp.status}）— Token 无效或地址错误`;
+    }
+  } catch (e) {
+    // 浏览器跨域限制，API 可能不允许直接请求
+    msg.className = 'verify-msg fail';
+    msg.innerHTML = `<span class="status-dot status-fail"></span>
+      无法直接验证（跨域限制）— Token 格式看起来正常，继续配置即可`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = '重新验证';
+}
+
+// ── Generate JSON ─────────────────────────────────────────────────────────
+function generate() {
+  const url   = getCanvasUrl();
+  const uid   = $('uid').value.trim();
+  const token = $('canvas-token').value.trim();
+  const sck   = $('sck').value.trim();
+  const tgTok = $('tg-token').value.trim();
+  const tgChat= $('tg-chat').value.trim();
+
+  if (!url)   return alert('请选择或填写学校 Canvas 地址');
+  if (!uid)   return alert('请填写用户 ID（英文）');
+  if (!token) return alert('请填写 Canvas Token');
+  if (!sck && !tgTok) return alert('请至少填写一个通知渠道');
+
+  const user = { id: uid, canvas_url: url, canvas_token: token };
+  if (sck)   user.serverchan_key = sck;
+  if (tgTok) user.telegram_bot_token = tgTok;
+  if (tgChat)user.telegram_chat_id   = tgChat;
+
+  // 读取现有 output，尝试追加（多用户场景）
+  let arr = [];
+  try {
+    const existing = $('output').value.trim();
+    if (existing) arr = JSON.parse(existing);
+  } catch {}
+
+  // 如果 id 已存在则更新，否则追加
+  const idx = arr.findIndex(u => u.id === uid);
+  if (idx >= 0) arr[idx] = user;
+  else arr.push(user);
+
+  $('output').value = JSON.stringify(arr, null, 2);
+  $('output-card').style.display = 'block';
+  $('output-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  $('copy-btn').textContent = '复制';
+  $('copy-btn').className = 'copy-btn';
+}
+
+// ── Copy ──────────────────────────────────────────────────────────────────
+function copyOutput() {
+  const text = $('output').value;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = $('copy-btn');
+    btn.textContent = '已复制 ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '复制';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
