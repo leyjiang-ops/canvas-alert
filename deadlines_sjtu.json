@@ -1,50 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-05-31T15:03:58.134391+00:00"
-  },
-  "assignment_407457": {
-    "id": "assignment_407457",
-    "raw_id": 407457,
-    "course_id": 89879,
-    "course": "棒球",
-    "title": "2026春季学期体育理论作业",
-    "type": "作业",
-    "due": "2026-05-31T15:59:00Z",
-    "remind_at": "2026-05-31T16:02:23.157220+00:00",
-    "reminded": true
-  },
-  "quiz_76375": {
-    "id": "quiz_76375",
-    "raw_id": 76375,
-    "course_id": 89879,
-    "course": "棒球",
-    "title": "2026春季学期体育理论作业",
-    "type": "Quiz",
-    "due": "2026-05-31T15:59:00Z",
-    "remind_at": "2026-05-31T16:02:23.157247+00:00",
-    "reminded": false
-  },
-  "assignment_404172": {
-    "id": "assignment_404172",
-    "raw_id": 404172,
-    "course_id": 89351,
-    "course": "形势与政策",
-    "title": "新一轮科技革命背景下人文与科技的双向赋能",
-    "type": "作业",
-    "due": "2026-05-31T15:59:59Z",
-    "remind_at": "2026-05-31T16:02:23.447779+00:00",
-    "reminded": true
-  },
-  "assignment_412112": {
-    "id": "assignment_412112",
-    "raw_id": 412112,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 1",
-    "type": "作业",
-    "due": "2026-05-31T15:59:59Z",
-    "remind_at": "2026-05-31T16:02:26.121938+00:00",
-    "reminded": true
+    "last_stream_check": "2026-05-31T18:56:45.160999+00:00"
   },
   "assignment_412866": {
     "id": "assignment_412866",
