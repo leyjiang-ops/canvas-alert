@@ -495,7 +495,12 @@ def check_reminders(u: dict):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def daily_summary(u: dict):
-    now       = datetime.now(timezone.utc)
+    now = datetime.now(timezone.utc)
+
+    # ── 先做一次同步，确保 deadlines 是最新的（token 已在入口验证过）──
+    print(f"  [daily][{u['id']}] 先同步最新数据…")
+    full_sync(u)
+
     deadlines = clean_deadlines(load_deadlines(u))
     items_raw = [v for k, v in deadlines.items() if not k.startswith("_")]
 
@@ -545,11 +550,78 @@ def daily_summary(u: dict):
 # 入口：遍历所有用户
 # ══════════════════════════════════════════════════════════════════════════════
 
+# ══════════════════════════════════════════════════════════════════════════════
+# 模式五：ics —— 生成日历订阅文件 docs/calendar_{id}.ics
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _ics_escape(text: str) -> str:
+    return (str(text).replace("\\", "\\\\").replace(";", "\\;")
+            .replace(",", "\\,").replace("\n", "\\n"))
+
+
+def _ics_fold(line: str) -> str:
+    """RFC5545 按 75 字节折行（中文按字节计），续行以空格开头。"""
+    if len(line.encode("utf-8")) <= 73:
+        return line
+    out, cur = [], b""
+    for ch in line:
+        b = ch.encode("utf-8")
+        if len(cur) + len(b) > 73:
+            out.append(cur)
+            cur = b" " + b
+        else:
+            cur += b
+    out.append(cur)
+    return "\r\n".join(seg.decode("utf-8") for seg in out)
+
+
+def _ics_dt(dt: datetime) -> str:
+    return dt.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def generate_ics(u: dict):
+    deadlines = clean_deadlines(load_deadlines(u))
+    items     = [v for k, v in deadlines.items() if not k.startswith("_")]
+    cal_id    = u.get("calendar_id", u["id"])   # 可选随机 id 提升隐私
+
+    lines = [
+        "BEGIN:VCALENDAR", "VERSION:2.0",
+        "PRODID:-//canvas-alert//DDL//CN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+        f"X-WR-CALNAME:Canvas DDL ({u['id']})", "X-WR-TIMEZONE:Asia/Shanghai",
+    ]
+    for it in sorted(items, key=lambda x: x["due"]):
+        due = parse_dt(it["due"])
+        end = due + timedelta(minutes=30)
+        summary = f"[{it.get('type', '作业')}] {it.get('course', '')} - {it.get('title', '')}"
+        desc    = f"截止：{due.astimezone(CST).strftime('%Y-%m-%d %H:%M')} (CST)"
+        lines += [
+            "BEGIN:VEVENT",
+            _ics_fold(f"UID:{it['id']}@canvas-alert-{cal_id}"),
+            f"DTSTAMP:{_ics_dt(due)}",          # 确定性时间戳：deadline 不变则文件不变
+            f"DTSTART:{_ics_dt(due)}",
+            f"DTEND:{_ics_dt(end)}",
+            _ics_fold("SUMMARY:" + _ics_escape(summary)),
+            _ics_fold("DESCRIPTION:" + _ics_escape(desc)),
+            "BEGIN:VALARM", "ACTION:DISPLAY",
+            _ics_fold("DESCRIPTION:" + _ics_escape(summary)),
+            "TRIGGER:-PT2H", "END:VALARM",
+            "END:VEVENT",
+        ]
+    lines.append("END:VCALENDAR")
+
+    docs = Path("docs")
+    docs.mkdir(exist_ok=True)
+    out = docs / f"calendar_{cal_id}.ics"
+    out.write_text("\r\n".join(lines) + "\r\n", encoding="utf-8")
+    print(f"  [ics][{u['id']}] 写入 {out}（{len(items)} 个事件）")
+
+
 MODES = {
     "--stream": stream_check,
     "--sync":   full_sync,
     "--check":  check_reminders,
     "--daily":  daily_summary,
+    "--ics":    generate_ics,
 }
 
 if __name__ == "__main__":
@@ -561,7 +633,30 @@ if __name__ == "__main__":
     fn    = MODES[mode]
     users = load_users()
     print(f"[{mode}] 共 {len(users)} 个用户\n")
+
+    # 需要 Canvas API 的模式（--check 和 --ics 只读本地 JSON，不需要验证）
+    needs_api = mode in ("--stream", "--sync", "--daily")
+
     for u in users:
         print(f"── 用户 {u['id']} ({u.get('canvas_url', '')}) ──")
-        fn(u)
+
+        # 对需要 API 的模式，先验证 token
+        if needs_api:
+            try:
+                r = requests.get(
+                    f"{u['canvas_url']}/api/v1/users/self",
+                    headers=auth(u), timeout=15,
+                )
+                if r.status_code == 401:
+                    print(f"  [跳过] Canvas token 无效（401），请让该用户重新生成 token\n")
+                    continue
+            except Exception as e:
+                print(f"  [跳过] Canvas 连接失败：{e}\n")
+                continue
+
+        try:
+            fn(u)
+        except Exception as e:
+            print(f"  [错误] {e}\n")
+            continue
         print()

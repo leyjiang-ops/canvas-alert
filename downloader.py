@@ -128,14 +128,22 @@ def main(warn_hours: int, download_dir: Path):
         print("  Mac/Linux: export CANVAS_TOKEN=你的token")
         sys.exit(1)
 
-    if not DEADLINES_FILE.exists():
-        print(f"错误：找不到 {DEADLINES_FILE}")
-        print("  请先运行一次 GitHub Actions 的 --sync，")
-        print("  或把仓库里最新的 deadlines.json 放到同目录下。")
+    # 兼容多用户：优先读 deadlines_*.json，没有再读旧的 deadlines.json
+    base     = Path(__file__).parent
+    dl_files = sorted(base.glob("deadlines_*.json"))
+    if not dl_files and (base / "deadlines.json").exists():
+        dl_files = [base / "deadlines.json"]
+    if not dl_files:
+        print("错误：找不到 deadlines_*.json")
+        print("  请把仓库里最新的 deadlines_<id>.json 放到本脚本同目录下。")
         sys.exit(1)
 
-    with open(DEADLINES_FILE, encoding="utf-8") as f:
-        deadlines = json.load(f)
+    deadlines = {}
+    for fp in dl_files:
+        try:
+            deadlines.update(json.loads(fp.read_text(encoding="utf-8")))
+        except Exception as e:
+            print(f"  [warn] 读取 {fp.name} 失败：{e}")
 
     now      = datetime.now(timezone.utc)
     deadline = now + timedelta(hours=warn_hours)
@@ -180,6 +188,15 @@ def main(warn_hours: int, download_dir: Path):
         # 下载目录：download_dir/课程名/作业名/
         safe = lambda s: re.sub(r'[\\/:*?"<>|]', '_', s)
         dest_folder = download_dir / safe(item["course"]) / safe(item["title"])
+        dest_folder.mkdir(parents=True, exist_ok=True)
+        # 记录元数据，供 solver.py 拉取课件上下文
+        (dest_folder / "_meta.json").write_text(json.dumps({
+            "course_id":  course_id,
+            "raw_id":     raw_id,
+            "course":     item["course"],
+            "title":      item["title"],
+            "canvas_url": CANVAS_URL,
+        }, ensure_ascii=False, indent=2), encoding="utf-8")
 
         count = 0
         for fid in file_ids:
