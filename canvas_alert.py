@@ -235,6 +235,7 @@ def register_item(deadlines, iid, raw_id, course_id, course,
         "due":       due_str,
         "remind_at": make_remind_at(due_str),
         "reminded":  submitted,
+        "submitted": submitted,
     }
     return True
 
@@ -425,6 +426,9 @@ def full_sync(u: dict):
                 if parse_dt(item["due"]) <= now:
                     continue
                 iid = item["id"]
+                if iid in deadlines:
+                    deadlines[iid]["submitted"] = item["submitted"]
+                    continue
                 if register_item(deadlines, iid, item["raw_id"], cid,
                                  cname, item["title"], item["type"], item["due"],
                                  submitted=item["submitted"]):
@@ -464,6 +468,7 @@ def check_reminders(u: dict):
     for item in due_items:
         submitted = is_submitted(u, item)
         deadlines[item["id"]]["reminded"] = True
+        deadlines[item["id"]]["submitted"] = submitted
         changed = True
         if submitted:
             print(f"  [check][{u['id']}] 已提交，跳过：{item['title']}")
@@ -511,8 +516,10 @@ def daily_summary(u: dict):
     all_items = []
     for item in items_raw:
         submitted = is_submitted(u, item)
+        deadlines[item["id"]]["submitted"] = submitted
         all_items.append({**item, "submitted": submitted,
                           "due_dt": parse_dt(item["due"])})
+    save_deadlines(u, deadlines)
 
     all_items.sort(key=lambda x: (x["submitted"], x["due_dt"]))
     pending = sum(1 for i in all_items if not i["submitted"])
@@ -581,7 +588,8 @@ def _ics_dt(dt: datetime) -> str:
 
 def generate_ics(u: dict):
     deadlines = clean_deadlines(load_deadlines(u))
-    items     = [v for k, v in deadlines.items() if not k.startswith("_")]
+    items     = [v for k, v in deadlines.items()
+                 if not k.startswith("_") and not v.get("submitted")]
     cal_id    = u.get("calendar_id", u["id"])   # 可选随机 id 提升隐私
 
     lines = [

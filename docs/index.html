@@ -246,6 +246,65 @@
       font-family: monospace;
     }
 
+    /* Subscribe section */
+    .sub-btn-row {
+      display: flex; gap: .8rem; flex-wrap: wrap;
+      margin: 1rem 0 1.5rem;
+    }
+    .sub-add-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      text-decoration: none;
+    }
+    .sub-add-btn:hover { text-decoration: none; }
+    .sub-qr-wrap {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      margin-top: 1rem;
+    }
+    .sub-qr-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1rem;
+      text-align: center;
+    }
+    .sub-qr-card img {
+      width: 100%; height: auto; display: block;
+      background: #fff; border-radius: 6px; padding: 8px;
+    }
+    .sub-qr-hint {
+      font-size: .78rem; color: var(--muted);
+      margin-top: .6rem;
+    }
+    .sub-qr-side h4 {
+      font-size: .9rem; margin-top: .8rem; margin-bottom: .25rem;
+      color: var(--text);
+    }
+    .sub-qr-side h4:first-child { margin-top: 0; }
+    .sub-qr-side p {
+      font-size: .82rem; color: var(--muted); line-height: 1.55;
+    }
+    .sub-qr-side code {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 4px; padding: .1rem .4rem; font-size: .78rem;
+      font-family: monospace;
+    }
+    .sub-note {
+      font-size: .8rem; color: var(--muted);
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: .8rem 1rem;
+      margin-top: 1.5rem; line-height: 1.7;
+    }
+    .sub-note code {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; padding: .1rem .4rem; font-size: .78rem;
+      font-family: monospace; color: var(--accent);
+    }
+    @media (max-width: 600px) {
+      .sub-qr-wrap { grid-template-columns: 1fr; }
+      .sub-qr-card { max-width: 220px; margin: 0 auto; }
+    }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
@@ -268,6 +327,7 @@
   <div class="nav-logo">Canvas <span>Alert</span></div>
   <div class="nav-links">
     <a href="#config">配置</a>
+    <a href="#subscribe">日历订阅</a>
     <a href="#steps">部署</a>
   </div>
   <a class="nav-gh" href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">
@@ -321,6 +381,12 @@
     <div class="feat-icon">📱</div>
     <h3>双渠道推送</h3>
     <p>微信（Server酱）+ Telegram 同时送达，考试周不怕额度耗尽。</p>
+  </div>
+  <div class="feat-card" onclick="document.getElementById('subscribe').scrollIntoView({behavior:'smooth'})"
+       style="cursor:pointer">
+    <div class="feat-icon">📅</div>
+    <h3>苹果日历订阅</h3>
+    <p>一键订阅到 iPhone / Mac 日历，已提交自动消失，跨设备 iCloud 同步。</p>
   </div>
 </div>
 
@@ -424,6 +490,69 @@
     <p style="font-size:.82rem; color:var(--muted); margin-top:.8rem;">
       ⚠️ 这个 JSON 包含你的 token，请勿分享给他人。
     </p>
+  </div>
+</section>
+
+<!-- ── Subscribe Calendar ─────────────────────────────────────────────────── -->
+<section class="config-section" id="subscribe">
+  <div class="section-title">📅 订阅到苹果日历</div>
+  <div class="section-sub">
+    用户 ID 即配置时填的那个（如 <code>sjtu</code>）。订阅后所有 DDL 自动出现在
+    iPhone / iPad / Mac 的"日历"里，已提交的会自动消失。
+  </div>
+
+  <div class="card">
+    <div class="card-title">① 输入你的日历标识符</div>
+    <div class="field">
+      <label>
+        calendar_id 或 id
+        <span class="hint">
+          配置生成器会自动加 <code>calendar_id</code>（16 字符随机串），粘贴它最安全；
+          没设置就填 <code>id</code>
+        </span>
+      </label>
+      <input type="text" id="sub-uid" placeholder="例如：a7f3k9zq2pmw8x4n 或 sjtu" oninput="updateSubLinks()" />
+    </div>
+
+    <div class="field" id="sub-url-field" style="display:none">
+      <label>订阅 URL <span class="hint">点 webcal:// 链接 iPhone 会直接打开"添加订阅"</span></label>
+      <div class="token-wrap">
+        <input type="text" id="sub-url" readonly />
+        <button class="token-toggle" onclick="copySubUrl()">复制</button>
+      </div>
+    </div>
+
+    <div id="sub-actions" style="display:none">
+      <div class="sub-btn-row">
+        <a class="btn-primary sub-add-btn" id="sub-webcal" href="#">
+          📲 在 iPhone / Mac 一键添加
+        </a>
+        <a class="btn-secondary" id="sub-https" href="#" target="_blank">
+          🌐 查看 .ics 原文
+        </a>
+      </div>
+
+      <div class="sub-qr-wrap">
+        <div class="sub-qr-card">
+          <img id="sub-qr" alt="订阅二维码" />
+          <p class="sub-qr-hint">用 iPhone 相机扫码 → 自动打开订阅</p>
+        </div>
+        <div class="sub-qr-side">
+          <h4>iPhone / iPad</h4>
+          <p>用相机扫码，或点击上方"一键添加"按钮 → 系统弹窗"添加订阅日历" → 确认。</p>
+          <h4>macOS</h4>
+          <p>日历 App → 菜单栏 <code>文件 → 新建日历订阅</code> → 粘贴上方 URL → 自动更新选 15 分钟。</p>
+          <h4>Google Calendar</h4>
+          <p>设置 → 添加日历 → <strong>通过网址添加</strong> → 粘贴上方 https:// URL（不是 webcal）。</p>
+        </div>
+      </div>
+
+      <p class="sub-note">
+        ⚠️ iOS 自动拉取最快约 15 分钟一次（系统控制），手动下拉刷新可立即同步。<br/>
+        ⚠️ 当前 URL 用你的 id 拼成，外人若知道你的 id 可猜到链接。如需提升隐私，
+        在 USERS_CONFIG 里加 <code>"calendar_id": "随机串"</code> 字段，订阅 URL 会改成对应的随机名。
+      </p>
+    </div>
   </div>
 </section>
 
@@ -563,6 +692,16 @@ async function verifyToken() {
   btn.textContent = '重新验证';
 }
 
+// ── Random calendar_id ────────────────────────────────────────────────────
+function randomCalendarId(len = 16) {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const buf = new Uint8Array(len);
+  (window.crypto || window.msCrypto).getRandomValues(buf);
+  let out = '';
+  for (let i = 0; i < len; i++) out += alphabet[buf[i] % alphabet.length];
+  return out;
+}
+
 // ── Generate JSON ─────────────────────────────────────────────────────────
 function generate() {
   const url   = getCanvasUrl();
@@ -577,17 +716,26 @@ function generate() {
   if (!token) return alert('请填写 Canvas Token');
   if (!sck && !tgTok) return alert('请至少填写一个通知渠道');
 
-  const user = { id: uid, canvas_url: url, canvas_token: token };
-  if (sck)   user.serverchan_key = sck;
-  if (tgTok) user.telegram_bot_token = tgTok;
-  if (tgChat)user.telegram_chat_id   = tgChat;
-
-  // 读取现有 output，尝试追加（多用户场景）
+  // 读取现有 output（多用户场景）
   let arr = [];
   try {
     const existing = $('output').value.trim();
     if (existing) arr = JSON.parse(existing);
   } catch {}
+
+  // 同 id 已存在则复用旧的 calendar_id（避免日历订阅失效），否则新生成
+  const existingUser = arr.find(u => u.id === uid);
+  const calendarId   = existingUser?.calendar_id || randomCalendarId();
+
+  const user = {
+    id:           uid,
+    canvas_url:   url,
+    canvas_token: token,
+    calendar_id:  calendarId,
+  };
+  if (sck)   user.serverchan_key = sck;
+  if (tgTok) user.telegram_bot_token = tgTok;
+  if (tgChat)user.telegram_chat_id   = tgChat;
 
   // 如果 id 已存在则更新，否则追加
   const idx = arr.findIndex(u => u.id === uid);
@@ -599,6 +747,49 @@ function generate() {
   $('output-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   $('copy-btn').textContent = '复制';
   $('copy-btn').className = 'copy-btn';
+
+  // 把刚生成的 calendar_id 自动填进日历订阅区，省得用户复制
+  $('sub-uid').value = calendarId;
+  updateSubLinks();
+}
+
+// ── Subscribe links ───────────────────────────────────────────────────────
+function getSubBaseUrl() {
+  // 同源：用页面所在的 GitHub Pages 路径（fork 后也能用）
+  const { origin, pathname } = window.location;
+  const dir = pathname.replace(/[^/]*$/, '');   // 去掉文件名，留目录
+  return origin + dir;
+}
+
+function updateSubLinks() {
+  const uid = $('sub-uid').value.trim();
+  if (!uid) {
+    $('sub-url-field').style.display = 'none';
+    $('sub-actions').style.display   = 'none';
+    return;
+  }
+  const safe   = encodeURIComponent(uid);
+  const base   = getSubBaseUrl();                     // https://user.github.io/canvas-alert/
+  const https  = `${base}calendar_${safe}.ics`;
+  const webcal = https.replace(/^https?:/, 'webcal:');
+
+  $('sub-url').value           = https;
+  $('sub-webcal').href         = webcal;
+  $('sub-https').href          = https;
+  $('sub-qr').src              = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=${encodeURIComponent(webcal)}`;
+  $('sub-url-field').style.display = 'block';
+  $('sub-actions').style.display   = 'block';
+}
+
+function copySubUrl() {
+  const text = $('sub-url').value;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const old = btn.textContent;
+    btn.textContent = '已复制 ✓';
+    setTimeout(() => { btn.textContent = old; }, 1500);
+  });
 }
 
 // ── Copy ──────────────────────────────────────────────────────────────────
