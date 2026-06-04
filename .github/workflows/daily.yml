@@ -29,11 +29,37 @@ jobs:
           USERS_CONFIG: ${{ secrets.USERS_CONFIG }}
         run: python canvas_alert.py --daily
 
-      - name: Save state
+      - name: Save state (retry on concurrent push)
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add deadlines_*.json docs/*.ics
-          git diff --cached --quiet || git commit -m "chore: daily sync [skip ci]"
-          git pull --rebase origin main
-          git push
+
+          SNAP=$(mktemp -d)
+          mkdir -p "$SNAP/docs"
+          cp deadlines_*.json     "$SNAP/"      2>/dev/null || true
+          cp docs/calendar_*.ics  "$SNAP/docs/" 2>/dev/null || true
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+
+            cp "$SNAP"/deadlines_*.json     .         2>/dev/null || true
+            cp "$SNAP/docs"/calendar_*.ics  docs/     2>/dev/null || true
+
+            git add deadlines_*.json docs/*.ics
+            if git diff --cached --quiet; then
+              echo "No state changes to commit"
+              exit 0
+            fi
+
+            git commit -m "chore: daily sync [skip ci]"
+            if git push; then
+              echo "Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push attempt $attempt failed, sleeping then retrying..."
+            sleep $((attempt * 3))
+          done
+
+          echo "::warning::Could not push state after 5 attempts; next run will catch up"
+          exit 0
