@@ -1,4 +1,7 @@
 {
+  "_meta": {
+    "last_stream_check": "2026-06-05T12:50:29.411986+00:00"
+  },
   "assignment_127364": {
     "id": "assignment_127364",
     "raw_id": 127364,
@@ -106,8 +109,5 @@
     "remind_at": "2026-06-07T13:59:59+00:00",
     "reminded": true,
     "submitted": true
-  },
-  "_meta": {
-    "last_stream_check": "2026-06-05T12:45:27.937805+00:00"
   }
 }
