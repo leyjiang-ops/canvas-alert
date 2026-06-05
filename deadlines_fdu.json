@@ -1,0 +1,110 @@
+{
+  "assignment_127364": {
+    "id": "assignment_127364",
+    "raw_id": 127364,
+    "course_id": 110396,
+    "course": "AIE310005.02 人工智能导论 Introduction to Artificial Intelligence",
+    "title": "最终报告，ppt，及可复习代码",
+    "type": "作业",
+    "due": "2026-07-05T15:59:59Z",
+    "remind_at": "2026-07-05T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_131320": {
+    "id": "assignment_131320",
+    "raw_id": 131320,
+    "course_id": 110396,
+    "course": "AIE310005.02 人工智能导论 Introduction to Artificial Intelligence",
+    "title": "FOIL算法练习题",
+    "type": "作业",
+    "due": "2026-06-07T15:59:59Z",
+    "remind_at": "2026-06-07T13:59:59+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "assignment_128436": {
+    "id": "assignment_128436",
+    "raw_id": 128436,
+    "course_id": 111114,
+    "course": "GESP20004.53 强国之路：形势、政策与使命Ⅳ The Path of Building a Powerful Country: Situation Policy and Mission IV",
+    "title": "个人创新设计报告",
+    "type": "作业",
+    "due": "2026-06-08T09:00:00Z",
+    "remind_at": "2026-06-08T07:00:00+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "assignment_128437": {
+    "id": "assignment_128437",
+    "raw_id": 128437,
+    "course_id": 111114,
+    "course": "GESP20004.53 强国之路：形势、政策与使命Ⅳ The Path of Building a Powerful Country: Situation Policy and Mission IV",
+    "title": "个人感悟与发展愿景报告",
+    "type": "作业",
+    "due": "2026-06-08T09:00:00Z",
+    "remind_at": "2026-06-08T07:00:00+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "assignment_132743": {
+    "id": "assignment_132743",
+    "raw_id": 132743,
+    "course_id": 108726,
+    "course": "MATH30011.02 数理统计 Mathematical Statistics",
+    "title": "第三次作业",
+    "type": "作业",
+    "due": "2026-06-14T15:59:59Z",
+    "remind_at": "2026-06-14T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_133291": {
+    "id": "assignment_133291",
+    "raw_id": 133291,
+    "course_id": 107993,
+    "course": "MATH40026.01 统计中的计算方法 Numerical Methods for Statistical Models",
+    "title": "作业5",
+    "type": "作业",
+    "due": "2026-06-16T15:59:59Z",
+    "remind_at": "2026-06-16T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_132934": {
+    "id": "assignment_132934",
+    "raw_id": 132934,
+    "course_id": 109842,
+    "course": "MATH20017h.01 实变函数(H) Functions of Real Variable (H)",
+    "title": "作业13",
+    "type": "作业",
+    "due": "2026-06-07T15:59:59Z",
+    "remind_at": "2026-06-07T13:59:59+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "assignment_130425": {
+    "id": "assignment_130425",
+    "raw_id": 130425,
+    "course_id": 110463,
+    "course": "MATH40057h.01 数值代数与优化(H) Numerical Linear Algebra and Optimization(H)",
+    "title": "Coursework",
+    "type": "作业",
+    "due": "2026-06-18T15:59:59Z",
+    "remind_at": "2026-06-18T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_132480": {
+    "id": "assignment_132480",
+    "raw_id": 132480,
+    "course_id": 110463,
+    "course": "MATH40057h.01 数值代数与优化(H) Numerical Linear Algebra and Optimization(H)",
+    "title": "Homework 06",
+    "type": "作业",
+    "due": "2026-06-07T15:59:59Z",
+    "remind_at": "2026-06-07T13:59:59+00:00",
+    "reminded": true,
+    "submitted": true
+  }
+}
