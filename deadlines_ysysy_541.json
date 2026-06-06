@@ -106,5 +106,8 @@
     "remind_at": "2026-06-14T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "_meta": {
+    "last_stream_check": "2026-06-06T13:56:26.689204+00:00"
   }
 }
