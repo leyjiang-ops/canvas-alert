@@ -1,18 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-06T15:56:21.942125+00:00"
-  },
-  "assignment_411968": {
-    "id": "assignment_411968",
-    "raw_id": 411968,
-    "course_id": 86761,
-    "course": "芳香植物精油与芳香疗法",
-    "title": "山茶花或者映山红提取物在护肤中的应用",
-    "type": "作业",
-    "due": "2026-06-06T15:59:59Z",
-    "remind_at": "2026-06-06T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
+    "last_stream_check": "2026-06-06T16:01:23.020270+00:00"
   },
   "assignment_405051": {
     "id": "assignment_405051",
@@ -85,18 +73,6 @@
     "remind_at": "2026-07-05T13:59:00+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_412541": {
-    "id": "assignment_412541",
-    "raw_id": 412541,
-    "course_id": 87742,
-    "course": "信号与系统设计",
-    "title": "Lab3",
-    "type": "作业",
-    "due": "2026-06-06T15:59:59Z",
-    "remind_at": "2026-06-06T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_413760": {
     "id": "assignment_413760",
