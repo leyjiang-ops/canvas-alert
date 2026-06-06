@@ -1,649 +1,1259 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Canvas Alert — 配置中心</title>
+  <title>Canvas Alert</title>
   <style>
-    /* ── Reset & Base ─────────────────────────────────────────────────────── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
-      --border:    #30363d;
-      --accent:    #2f81f7;
-      --accent-h:  #388bfd;
-      --green:     #3fb950;
-      --red:       #f85149;
-      --yellow:    #d29922;
-      --text:      #e6edf3;
-      --muted:     #8b949e;
-      --radius:    10px;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-                   "Microsoft YaHei", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+/* ═══════════════════════════════════════════════════════════════════════════
+   THEME VARIABLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Nav ──────────────────────────────────────────────────────────────── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem; height: 60px;
-      background: rgba(13,17,23,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--text); }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 1.5rem; font-size: .9rem; color: var(--muted); }
-    .nav-links a { color: var(--muted); }
-    .nav-links a:hover { color: var(--text); text-decoration: none; }
-    .nav-gh {
-      display: flex; align-items: center; gap: .4rem;
-      padding: .35rem .9rem; border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--surface); font-size: .85rem;
-      color: var(--text); cursor: pointer;
-      transition: border-color .2s;
-    }
-    .nav-gh:hover { border-color: var(--accent); }
+[data-theme="dark"] {
+  --bg:          #050816;
+  --bg2:         #0a0f1f;
+  --surface:     #0f172a;
+  --surface2:    #1e293b;
+  --border:      #1e293b;
+  --border-h:    #334155;
+  --text:        #e2e8f0;
+  --text2:       #f8fafc;
+  --muted:       #94a3b8;
+  --accent:      #818cf8;
+  --accent2:     #6366f1;
+  --accent-glow: rgba(129,140,248,.12);
+  --accent-glow2:rgba(99,102,241,.25);
+  --green:       #34d399;
+  --red:         #f87171;
+  --yellow:      #fbbf24;
+  --gradient:    linear-gradient(135deg, #6366f1, #a855f7);
+  --nav-bg:      rgba(5,8,22,.82);
+  --shadow:      0 4px 24px rgba(0,0,0,.4);
+  --card-hover:  rgba(129,140,248,.06);
+  --code-bg:     #1e293b;
+}
+[data-theme="light"] {
+  --bg:          #f8fafc;
+  --bg2:         #f1f5f9;
+  --surface:     #ffffff;
+  --surface2:    #f1f5f9;
+  --border:      #e2e8f0;
+  --border-h:    #cbd5e1;
+  --text:        #1e293b;
+  --text2:       #0f172a;
+  --muted:       #64748b;
+  --accent:      #6366f1;
+  --accent2:     #4f46e5;
+  --accent-glow: rgba(99,102,241,.08);
+  --accent-glow2:rgba(79,70,229,.18);
+  --green:       #059669;
+  --red:         #dc2626;
+  --yellow:      #d97706;
+  --gradient:    linear-gradient(135deg, #6366f1, #a855f7);
+  --nav-bg:      rgba(248,250,252,.82);
+  --shadow:      0 4px 24px rgba(0,0,0,.08);
+  --card-hover:  rgba(99,102,241,.04);
+  --code-bg:     #f1f5f9;
+}
+:root { --radius: 12px; --radius-sm: 8px; }
 
-    /* ── Hero ─────────────────────────────────────────────────────────────── */
-    .hero {
-      text-align: center;
-      padding: 5rem 1.5rem 4rem;
-      background: radial-gradient(ellipse 80% 50% at 50% -10%,
-                  rgba(47,129,247,.18), transparent);
-    }
-    .hero-badge {
-      display: inline-block; margin-bottom: 1.2rem;
-      padding: .3rem .9rem; border-radius: 99px;
-      border: 1px solid rgba(47,129,247,.4);
-      background: rgba(47,129,247,.1);
-      font-size: .8rem; color: var(--accent);
-    }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.2; }
-    .hero h1 span { color: var(--accent); }
-    .hero p  { margin-top: 1rem; font-size: 1.1rem; color: var(--muted); max-width: 520px; margin-inline: auto; }
-    .hero-btns { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
-    .btn-primary {
-      padding: .65rem 1.6rem; border-radius: var(--radius);
-      background: var(--accent); color: #fff; font-size: .95rem; font-weight: 600;
-      border: none; cursor: pointer; transition: background .2s, transform .1s;
-    }
-    .btn-primary:hover { background: var(--accent-h); transform: translateY(-1px); }
-    .btn-secondary {
-      padding: .65rem 1.6rem; border-radius: var(--radius);
-      background: transparent; color: var(--text); font-size: .95rem; font-weight: 600;
-      border: 1px solid var(--border); cursor: pointer; transition: border-color .2s;
-    }
-    .btn-secondary:hover { border-color: var(--accent); }
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.65;
+  overflow-x: hidden;
+  transition: background .35s, color .35s;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code {
+  background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 4px; padding: .12rem .45rem; font-size: .82em;
+  font-family: "JetBrains Mono", "Fira Code", "SF Mono", monospace;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* ── Features ─────────────────────────────────────────────────────────── */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem; max-width: 900px; margin: 0 auto 5rem; padding: 0 1.5rem;
-    }
-    .feat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.4rem;
-      transition: border-color .2s, transform .2s;
-    }
-    .feat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    .feat-icon { font-size: 1.8rem; margin-bottom: .6rem; }
-    .feat-card h3 { font-size: .95rem; margin-bottom: .3rem; }
-    .feat-card p  { font-size: .82rem; color: var(--muted); }
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL REVEAL ANIMATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-d1 { transition-delay: .1s; }
+.reveal-d2 { transition-delay: .2s; }
+.reveal-d3 { transition-delay: .3s; }
+.reveal-d4 { transition-delay: .4s; }
 
-    /* ── Config Form ──────────────────────────────────────────────────────── */
-    .config-section {
-      max-width: 680px; margin: 0 auto 5rem; padding: 0 1.5rem;
-    }
-    .section-title {
-      font-size: 1.5rem; font-weight: 700;
-      margin-bottom: .4rem;
-    }
-    .section-sub { color: var(--muted); font-size: .9rem; margin-bottom: 2rem; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes pulse-ring { 0%{transform:scale(.9);opacity:.6} 100%{transform:scale(1.4);opacity:0} }
+@keyframes fade-in { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+@keyframes slide-up { from{opacity:0;transform:translateY(100%)} to{opacity:1;transform:none} }
 
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.8rem;
-      margin-bottom: 1rem;
-    }
-    .card-title {
-      font-size: .85rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: .06em; color: var(--muted); margin-bottom: 1.2rem;
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════════════════════════════════════════ */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem; height: 60px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: background .35s;
+}
+.nav-logo { font-weight: 800; font-size: 1.15rem; color: var(--text2); letter-spacing: -.02em; }
+.nav-logo span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-links { display: flex; gap: 1.8rem; font-size: .88rem; }
+.nav-links a { color: var(--muted); transition: color .2s; }
+.nav-links a:hover { color: var(--text); text-decoration: none; }
+.nav-right { display: flex; align-items: center; gap: .6rem; }
+.nav-btn {
+  display: flex; align-items: center; gap: .35rem;
+  padding: .4rem .75rem; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); font-size: .82rem; cursor: pointer;
+  transition: all .2s;
+}
+.nav-btn:hover { border-color: var(--accent); color: var(--text); }
+.nav-btn svg { width: 15px; height: 15px; }
 
-    .field { margin-bottom: 1.1rem; }
-    .field label {
-      display: block; font-size: .85rem; font-weight: 500;
-      margin-bottom: .4rem; color: var(--text);
-    }
-    .field label .hint {
-      font-weight: 400; color: var(--muted); font-size: .8rem; margin-left: .4rem;
-    }
-    .field input, .field select {
-      width: 100%; padding: .55rem .8rem;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 6px; color: var(--text);
-      font-size: .9rem; outline: none;
-      transition: border-color .2s;
-    }
-    .field input:focus, .field select:focus { border-color: var(--accent); }
-    .field select option { background: var(--surface); }
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO  — left mockup + right copy
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hero {
+  padding: 5rem 0 4rem;
+  background: radial-gradient(ellipse 70% 55% at 60% -5%, var(--accent-glow2), transparent);
+  overflow: hidden;
+}
+.hero-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 3rem; align-items: center;
+}
+.hero-copy { animation: fade-in .8s ease-out both; }
+.hero-badge {
+  display: inline-block; margin-bottom: 1.2rem;
+  padding: .35rem 1rem; border-radius: 99px;
+  border: 1px solid rgba(99,102,241,.35);
+  background: var(--accent-glow);
+  font-size: .8rem; color: var(--accent); font-weight: 500;
+}
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 800;
+  line-height: 1.18; letter-spacing: -.03em;
+}
+.hero h1 .grad {
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  margin-top: 1rem; font-size: 1.05rem; color: var(--muted);
+  max-width: 440px; line-height: 1.7;
+}
+.hero-btns { display: flex; gap: .8rem; margin-top: 2rem; flex-wrap: wrap; }
 
-    .token-wrap { position: relative; }
-    .token-wrap input { padding-right: 5rem; }
-    .token-toggle {
-      position: absolute; right: .6rem; top: 50%; transform: translateY(-50%);
-      background: none; border: none; color: var(--muted); cursor: pointer;
-      font-size: .78rem; padding: .2rem .4rem;
-    }
-    .token-toggle:hover { color: var(--text); }
+/* Mockup phone frame */
+.hero-mockup {
+  display: flex; justify-content: center;
+  animation: fade-in 1s .2s ease-out both;
+}
+.phone {
+  width: 280px; height: 520px;
+  border-radius: 32px; overflow: hidden;
+  border: 3px solid var(--border-h);
+  background: var(--surface);
+  box-shadow: var(--shadow), 0 0 60px var(--accent-glow2);
+  position: relative;
+  animation: float 5s ease-in-out infinite;
+}
+.phone-notch {
+  width: 110px; height: 28px; margin: 0 auto;
+  background: var(--bg); border-radius: 0 0 18px 18px;
+}
+.phone-screen { padding: .8rem; height: calc(100% - 28px); overflow: hidden; position: relative; }
 
-    .status-dot {
-      display: inline-block; width: 8px; height: 8px;
-      border-radius: 50%; margin-right: .35rem; vertical-align: middle;
-    }
-    .status-ok   { background: var(--green); }
-    .status-fail { background: var(--red); }
-    .status-idle { background: var(--muted); }
+/* Carousel slides */
+.phone-slide {
+  position: absolute; inset: 0; padding: .8rem;
+  opacity: 0; transform: translateX(30px);
+  transition: opacity .5s, transform .5s;
+  display: flex; flex-direction: column; gap: .6rem;
+}
+.phone-slide.active { opacity: 1; transform: none; }
 
-    .verify-row { display: flex; gap: .6rem; align-items: flex-end; }
-    .verify-row .field { flex: 1; margin-bottom: 0; }
-    .btn-verify {
-      padding: .55rem 1rem; border-radius: 6px;
-      background: transparent; border: 1px solid var(--border);
-      color: var(--text); font-size: .85rem; cursor: pointer;
-      white-space: nowrap; transition: border-color .2s;
-      height: 36px; align-self: flex-end;
-    }
-    .btn-verify:hover { border-color: var(--accent); }
-    .btn-verify:disabled { opacity: .4; cursor: default; }
+.mock-header {
+  font-size: .72rem; font-weight: 700; color: var(--accent);
+  padding: .4rem .6rem; border-radius: 6px;
+  background: var(--accent-glow); display: inline-block;
+  margin-bottom: .2rem;
+}
+.mock-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: .7rem .8rem;
+  animation: slide-up .4s ease-out both;
+}
+.mock-card:nth-child(2) { animation-delay: .12s; }
+.mock-card:nth-child(3) { animation-delay: .24s; }
+.mock-card-title { font-size: .75rem; font-weight: 600; margin-bottom: .2rem; }
+.mock-card-sub   { font-size: .68rem; color: var(--muted); line-height: 1.4; }
+.mock-tag {
+  display: inline-block; font-size: .62rem; padding: .15rem .45rem;
+  border-radius: 4px; margin-top: .3rem; font-weight: 600;
+}
+.mock-tag.due   { background: rgba(251,191,36,.15); color: var(--yellow); }
+.mock-tag.done  { background: rgba(52,211,153,.15); color: var(--green); }
+.mock-tag.alert { background: rgba(248,113,113,.15); color: var(--red); }
 
-    .verify-msg { font-size: .82rem; margin-top: .45rem; min-height: 1.2em; }
-    .verify-msg.ok   { color: var(--green); }
-    .verify-msg.fail { color: var(--red); }
+/* Carousel dots */
+.carousel-dots {
+  display: flex; justify-content: center; gap: .4rem;
+  margin-top: 1rem;
+}
+.carousel-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); border: none; cursor: pointer;
+  transition: all .3s;
+}
+.carousel-dot.active { background: var(--accent); width: 22px; border-radius: 4px; }
 
-    /* section divider */
-    .divider {
-      display: flex; align-items: center; gap: .8rem;
-      margin: 1.5rem 0; color: var(--muted); font-size: .8rem;
-    }
-    .divider::before, .divider::after {
-      content: ''; flex: 1; height: 1px; background: var(--border);
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .7rem 1.5rem; border-radius: var(--radius-sm);
+  font-size: .92rem; font-weight: 600; cursor: pointer;
+  transition: all .2s; border: none; text-decoration: none;
+}
+.btn:hover { text-decoration: none; }
+.btn-primary {
+  background: var(--gradient); color: #fff;
+  box-shadow: 0 2px 12px var(--accent-glow2);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow2); }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-sm { padding: .45rem 1rem; font-size: .84rem; }
 
-    /* tabs */
-    .tabs { display: flex; gap: .5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .tab {
-      padding: .35rem .9rem; border-radius: 6px; font-size: .85rem;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--muted); cursor: pointer; transition: all .15s;
-    }
-    .tab.active {
-      background: rgba(47,129,247,.15); border-color: var(--accent);
-      color: var(--accent);
-    }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+/* ═══════════════════════════════════════════════════════════════════════════
+   FEATURES
+   ═══════════════════════════════════════════════════════════════════════════ */
+.features { padding: 4rem 0; }
+.features-grid {
+  position: relative;
+  max-width: 860px; margin: 0 auto;
+  aspect-ratio: 50 / 34;
+  min-height: 480px;
+}
 
-    /* output */
-    .output-wrap { position: relative; }
-    .output-wrap textarea {
-      width: 100%; min-height: 220px; padding: 1rem;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 6px; color: var(--green);
-      font-family: "JetBrains Mono", "Fira Code", monospace; font-size: .82rem;
-      resize: vertical; outline: none;
-    }
-    .copy-btn {
-      position: absolute; top: .5rem; right: .5rem;
-      padding: .3rem .75rem; border-radius: 5px;
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--muted); font-size: .78rem; cursor: pointer;
-      transition: all .15s;
-    }
-    .copy-btn:hover { border-color: var(--accent); color: var(--text); }
-    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+/* ── SVG star lines ── */
+.star-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+.star-line-outer {
+  fill: none; stroke: var(--accent); stroke-width: 1;
+  opacity: .12;
+}
+.star-line-inner {
+  fill: none; stroke: var(--accent); stroke-width: 1.6;
+  opacity: .28;
+  stroke-dasharray: 1800; stroke-dashoffset: 1800;
+  transition: stroke-dashoffset 2.2s cubic-bezier(.4,0,.2,1);
+}
+.features-grid.visible .star-line-inner { stroke-dashoffset: 0; }
+.star-glow {
+  fill: var(--accent); opacity: .04;
+}
 
-    .generate-btn {
-      width: 100%; margin-top: 1rem;
-      padding: .75rem; border-radius: var(--radius);
-      background: var(--accent); color: #fff;
-      font-size: 1rem; font-weight: 600; border: none; cursor: pointer;
-      transition: background .2s, transform .1s;
-    }
-    .generate-btn:hover { background: var(--accent-h); transform: translateY(-1px); }
+/* ── Cards on star tips ── */
+.features-grid .feat-card {
+  position: absolute; width: 178px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.star-pt-1 { left: 50%;    top: 11%;  }
+.star-pt-2 { left: 78%;    top: 41%;  }
+.star-pt-3 { left: 67.5%;  top: 89%;  }
+.star-pt-4 { left: 32.5%;  top: 89%;  }
+.star-pt-5 { left: 22%;    top: 41%;  }
 
-    /* Steps */
-    .steps { list-style: none; margin-top: 1.5rem; }
-    .steps li {
-      display: flex; gap: 1rem; padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .steps li:last-child { border-bottom: none; }
-    .step-num {
-      flex-shrink: 0;
-      width: 28px; height: 28px; border-radius: 50%;
-      background: rgba(47,129,247,.2); border: 1px solid var(--accent);
-      color: var(--accent); font-size: .85rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .step-body h4 { font-size: .9rem; margin-bottom: .2rem; }
-    .step-body p  { font-size: .82rem; color: var(--muted); }
-    .step-body code {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 4px; padding: .1rem .4rem; font-size: .8rem;
-      font-family: monospace;
-    }
+/* Mobile: collapse to vertical list */
+@media (max-width: 768px) {
+  .features-grid {
+    position: static; aspect-ratio: auto; min-height: auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    max-width: none;
+  }
+  .features-grid .feat-card {
+    position: static; width: 100% !important;
+    transform: none !important;
+  }
+  .features-grid .feat-card:hover {
+    transform: scale(1.03) !important;
+  }
+  .star-svg { display: none; }
+}
+@media (max-width: 480px) {
+  .features-grid { grid-template-columns: 1fr; }
+}
+.feat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5rem;
+  transition: all .3s; cursor: default; position: relative; overflow: hidden;
+}
+.feat-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--card-hover); opacity: 0; transition: opacity .3s;
+}
+.feat-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.feat-card:hover::before { opacity: 1; }
+/* Star layout: scale on hover instead of translate (preserve absolute positioning) */
+.features-grid .feat-card { transition: transform .3s, border-color .3s, box-shadow .3s; }
+.features-grid .feat-card:hover {
+  transform: translate(-50%, -50%) scale(1.06);
+  z-index: 10;
+}
+.feat-icon {
+  font-size: 1.6rem; margin-bottom: .6rem; position: relative;
+  width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+  background: var(--accent-glow); border-radius: 10px;
+}
+.feat-card h3 { font-size: .92rem; font-weight: 600; margin-bottom: .3rem; position: relative; }
+.feat-card p  { font-size: .82rem; color: var(--muted); position: relative; line-height: 1.55; }
 
-    /* Subscribe section */
-    .sub-btn-row {
-      display: flex; gap: .8rem; flex-wrap: wrap;
-      margin: 1rem 0 1.5rem;
-    }
-    .sub-add-btn {
-      display: inline-flex; align-items: center; gap: .4rem;
-      text-decoration: none;
-    }
-    .sub-add-btn:hover { text-decoration: none; }
-    .sub-qr-wrap {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 1.5rem;
-      align-items: start;
-      margin-top: 1rem;
-    }
-    .sub-qr-card {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1rem;
-      text-align: center;
-    }
-    .sub-qr-card img {
-      width: 100%; height: auto; display: block;
-      background: #fff; border-radius: 6px; padding: 8px;
-    }
-    .sub-qr-hint {
-      font-size: .78rem; color: var(--muted);
-      margin-top: .6rem;
-    }
-    .sub-qr-side h4 {
-      font-size: .9rem; margin-top: .8rem; margin-bottom: .25rem;
-      color: var(--text);
-    }
-    .sub-qr-side h4:first-child { margin-top: 0; }
-    .sub-qr-side p {
-      font-size: .82rem; color: var(--muted); line-height: 1.55;
-    }
-    .sub-qr-side code {
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 4px; padding: .1rem .4rem; font-size: .78rem;
-      font-family: monospace;
-    }
-    .sub-note {
-      font-size: .8rem; color: var(--muted);
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 6px; padding: .8rem 1rem;
-      margin-top: 1.5rem; line-height: 1.7;
-    }
-    .sub-note code {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 4px; padding: .1rem .4rem; font-size: .78rem;
-      font-family: monospace; color: var(--accent);
-    }
-    @media (max-width: 600px) {
-      .sub-qr-wrap { grid-template-columns: 1fr; }
-      .sub-qr-card { max-width: 220px; margin: 0 auto; }
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECTION HEADERS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.sec-header { text-align: center; margin-bottom: 2.5rem; }
+.sec-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800;
+  letter-spacing: -.02em;
+}
+.sec-header h2 .grad {
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sec-header p { color: var(--muted); font-size: .95rem; margin-top: .5rem; max-width: 500px; margin-inline: auto; }
 
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem; text-align: center;
-      color: var(--muted); font-size: .82rem;
-    }
+/* ═══════════════════════════════════════════════════════════════════════════
+   WIZARD (step-by-step config)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.wizard-section { padding: 4rem 0; }
+.wizard {
+  max-width: 640px; margin: 0 auto;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow);
+}
 
-    /* Responsive */
-    @media (max-width: 500px) {
-      .nav-links { display: none; }
-      .verify-row { flex-direction: column; }
-      .verify-row .btn-verify { width: 100%; }
-    }
+/* Progress bar */
+.wizard-progress {
+  display: flex; align-items: center; padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border); background: var(--bg2);
+  gap: 0;
+}
+.wz-step {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .8rem; color: var(--muted); font-weight: 500;
+  white-space: nowrap; transition: color .3s;
+}
+.wz-step.active { color: var(--accent); }
+.wz-step.done   { color: var(--green); }
+.wz-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 700;
+  border: 2px solid var(--border); color: var(--muted);
+  transition: all .3s; flex-shrink: 0;
+}
+.wz-step.active .wz-num {
+  border-color: var(--accent); color: #fff;
+  background: var(--gradient); box-shadow: 0 2px 10px var(--accent-glow2);
+}
+.wz-step.done .wz-num { border-color: var(--green); background: var(--green); color: #fff; }
+.wz-line {
+  flex: 1; height: 2px; background: var(--border);
+  margin: 0 .5rem; min-width: 16px; transition: background .3s;
+}
+.wz-line.done { background: var(--green); }
+
+/* Panels */
+.wz-panel { display: none; padding: 1.5rem; animation: fade-in .35s ease-out; }
+.wz-panel.active { display: block; }
+.wz-panel-title { font-size: 1.05rem; font-weight: 700; margin-bottom: .2rem; }
+.wz-panel-sub { font-size: .85rem; color: var(--muted); margin-bottom: 1.2rem; }
+
+/* Footer buttons */
+.wz-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem; border-top: 1px solid var(--border); background: var(--bg2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM ELEMENTS (shared between wizard & subscribe)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.field { margin-bottom: 1.1rem; }
+.field label {
+  display: block; font-size: .85rem; font-weight: 500;
+  margin-bottom: .4rem; color: var(--text);
+}
+.field .hint { font-weight: 400; color: var(--muted); font-size: .78rem; margin-left: .3rem; }
+.field input, .field select {
+  width: 100%; padding: .6rem .85rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-size: .9rem; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.field select option { background: var(--surface); }
+.token-wrap { position: relative; }
+.token-wrap input { padding-right: 5rem; }
+.token-toggle {
+  position: absolute; right: .6rem; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: .78rem; padding: .2rem .4rem; transition: color .2s;
+}
+.token-toggle:hover { color: var(--text); }
+.verify-row { display: flex; gap: .6rem; align-items: flex-end; }
+.verify-row .field { flex: 1; margin-bottom: 0; }
+.btn-verify {
+  padding: .6rem 1rem; border-radius: var(--radius-sm);
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text); font-size: .84rem; cursor: pointer;
+  white-space: nowrap; transition: all .2s; height: 40px;
+}
+.btn-verify:hover { border-color: var(--accent); }
+.btn-verify:disabled { opacity: .4; cursor: default; }
+.verify-msg { font-size: .82rem; margin-top: .5rem; min-height: 1.3em; }
+.verify-msg.ok   { color: var(--green); }
+.verify-msg.fail { color: var(--red); }
+.status-dot {
+  display: inline-block; width: 8px; height: 8px;
+  border-radius: 50%; margin-right: .35rem; vertical-align: middle;
+}
+.status-ok   { background: var(--green); }
+.status-fail { background: var(--red); }
+.status-idle { background: var(--muted); }
+
+/* Tabs (notification channels) */
+.tabs { display: flex; gap: .5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.tab {
+  padding: .4rem 1rem; border-radius: var(--radius-sm); font-size: .84rem;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all .2s;
+}
+.tab.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Output */
+.output-wrap { position: relative; }
+.output-wrap textarea {
+  width: 100%; min-height: 200px; padding: 1rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--green);
+  font-family: "JetBrains Mono", "Fira Code", monospace; font-size: .8rem;
+  resize: vertical; outline: none; line-height: 1.5;
+}
+.copy-float {
+  position: absolute; top: .5rem; right: .5rem;
+  padding: .35rem .8rem; border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted); font-size: .76rem; cursor: pointer;
+  transition: all .2s;
+}
+.copy-float:hover { border-color: var(--accent); color: var(--text); }
+.copy-float.copied { border-color: var(--green); color: var(--green); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SUBSCRIBE
+   ═══════════════════════════════════════════════════════════════════════════ */
+.subscribe-section { padding: 4rem 0; }
+.subscribe-card {
+  max-width: 720px; margin: 0 auto;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem;
+  box-shadow: var(--shadow);
+}
+.sub-btn-row { display: flex; gap: .8rem; flex-wrap: wrap; margin: 1.2rem 0 1.5rem; }
+.sub-qr-wrap {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 1.5rem; align-items: start; margin-top: 1rem;
+}
+.sub-qr-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem; text-align: center;
+}
+.sub-qr-card img {
+  width: 100%; height: auto; display: block;
+  background: #fff; border-radius: 6px; padding: 8px;
+}
+.sub-qr-hint { font-size: .76rem; color: var(--muted); margin-top: .5rem; }
+.sub-qr-side h4 { font-size: .88rem; margin-top: .8rem; margin-bottom: .2rem; }
+.sub-qr-side h4:first-child { margin-top: 0; }
+.sub-qr-side p  { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+.sub-note {
+  font-size: .78rem; color: var(--muted);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: .8rem 1rem;
+  margin-top: 1.5rem; line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEPLOY STEPS
+   ═══════════════════════════════════════════════════════════════════════════ */
+.deploy-section { padding: 4rem 0 5rem; }
+.deploy-steps {
+  max-width: 640px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.deploy-card {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.4rem;
+  transition: all .3s;
+}
+.deploy-card:hover { border-color: var(--accent); transform: translateX(4px); }
+.deploy-num {
+  flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gradient); color: #fff;
+  font-size: .9rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px var(--accent-glow2);
+}
+.deploy-body h4 { font-size: .95rem; font-weight: 600; margin-bottom: .25rem; }
+.deploy-body p  { font-size: .82rem; color: var(--muted); line-height: 1.55; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border); padding: 2.5rem 1.5rem;
+  text-align: center; color: var(--muted); font-size: .82rem;
+  transition: border-color .35s;
+}
+footer a { color: var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════════════════════════════ */
+.modal-bg {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+  z-index: 300; align-items: center; justify-content: center;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem;
+  max-width: 420px; width: 92%; position: relative;
+  animation: fade-in .25s ease-out;
+}
+.modal-close {
+  position: absolute; top: .8rem; right: .8rem;
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 1.2rem; padding: .2rem;
+}
+.modal-close:hover { color: var(--text); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  nav { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .hero { padding: 3rem 0 2.5rem; }
+  .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+  .hero-copy { order: 1; }
+  .hero-mockup { order: 2; }
+  .hero-sub { margin-inline: auto; }
+  .hero-btns { justify-content: center; }
+  .phone { width: 240px; height: 440px; }
+  /* features star → handled by its own @media block */
+  .sub-qr-wrap { grid-template-columns: 1fr; }
+  .sub-qr-card { max-width: 200px; margin: 0 auto; }
+  .wz-step span { display: none; }
+  .wizard-progress { justify-content: center; }
+}
+@media (max-width: 480px) {
+  /* features star → handled by its own @media block */
+  .verify-row { flex-direction: column; }
+  .verify-row .btn-verify { width: 100%; }
+  .hero-btns { flex-direction: column; align-items: center; }
+}
   </style>
 </head>
 <body>
 
-<!-- ── Nav ───────────────────────────────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     NAV
+     ════════════════════════════════════════════════════════════════════════ -->
 <nav>
   <div class="nav-logo">Canvas <span>Alert</span></div>
   <div class="nav-links">
-    <a href="#config">配置</a>
-    <a href="#subscribe">日历订阅</a>
-    <a href="#steps">部署</a>
+    <a href="#config" data-i18n="nav.config">配置</a>
+    <a href="#subscribe" data-i18n="nav.calendar">日历订阅</a>
+    <a href="#deploy" data-i18n="nav.deploy">部署</a>
   </div>
-  <a class="nav-gh" href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-               0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
-               -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
-               .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
-               -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27
-               .68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
-               .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
-               0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-    </svg>
-    GitHub
-  </a>
-</nav>
-
-<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
-<section class="hero">
-  <div class="hero-badge">🎓 支持 SJTU · FDU · 任意 Canvas 院校</div>
-  <h1>再也不会<span>漏掉 DDL</span></h1>
-  <p>Canvas 作业自动监控，新作业发布立即通知，截止前 2 小时精准提醒，已提交自动忽略。</p>
-  <div class="hero-btns">
-    <button class="btn-primary" onclick="document.getElementById('config').scrollIntoView({behavior:'smooth'})">
-      开始配置 →
+  <div class="nav-right">
+    <button class="nav-btn" onclick="toggleLang()" id="lang-btn" title="Switch language">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+      <span>EN</span>
     </button>
-    <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">
-      <button class="btn-secondary">查看源码</button>
+    <button class="nav-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">
+      <svg id="theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <svg id="theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+    </button>
+    <a class="nav-btn" href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
     </a>
   </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container hero-inner">
+    <!-- Left: mockup -->
+    <div class="hero-mockup">
+      <div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <!-- Slide 1: new assignments -->
+            <div class="phone-slide active" id="slide-0">
+              <div class="mock-header" data-i18n="mock.new">📋 新作业发布（3 项）</div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.hw1.title">[作业] 线性代数</div>
+                <div class="mock-card-sub" data-i18n="mock.hw1.sub">第三章矩阵运算习题</div>
+                <span class="mock-tag due" data-i18n="mock.hw1.tag">06/10 23:59 截止</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.hw2.title">[Quiz] 大学物理</div>
+                <div class="mock-card-sub" data-i18n="mock.hw2.sub">第五章热力学 Quiz</div>
+                <span class="mock-tag due" data-i18n="mock.hw2.tag">06/12 18:00 截止</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.hw3.title">[作业] 程序设计</div>
+                <div class="mock-card-sub" data-i18n="mock.hw3.sub">Lab 4: 链表与二叉树</div>
+                <span class="mock-tag due" data-i18n="mock.hw3.tag">06/14 23:59 截止</span>
+              </div>
+            </div>
+            <!-- Slide 2: reminder -->
+            <div class="phone-slide" id="slide-1">
+              <div class="mock-header" style="background:rgba(248,113,113,.12);color:var(--red)" data-i18n="mock.alert.header">⚠️ 2 项即将截止！</div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.alert1.title">[作业] 线性代数</div>
+                <div class="mock-card-sub" data-i18n="mock.alert1.sub">第三章矩阵运算习题</div>
+                <span class="mock-tag alert" data-i18n="mock.alert1.tag">还剩 1 小时 42 分</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.alert2.title">[Quiz] 大学物理</div>
+                <div class="mock-card-sub" data-i18n="mock.alert2.sub">第五章热力学 Quiz</div>
+                <span class="mock-tag alert" data-i18n="mock.alert2.tag">还剩 45 分钟</span>
+              </div>
+            </div>
+            <!-- Slide 3: daily summary -->
+            <div class="phone-slide" id="slide-2">
+              <div class="mock-header" style="background:rgba(52,211,153,.12);color:var(--green)" data-i18n="mock.daily.header">📚 今日课程汇总（5 项）</div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.daily1.title">[作业] 数据结构</div>
+                <span class="mock-tag done" data-i18n="mock.daily1.tag">已提交 ✓</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.daily2.title">[作业] 概率论</div>
+                <span class="mock-tag due" data-i18n="mock.daily2.tag">明天 23:59 截止</span>
+              </div>
+              <div class="mock-card">
+                <div class="mock-card-title" data-i18n="mock.daily3.title">[Quiz] 英语写作</div>
+                <span class="mock-tag due" data-i18n="mock.daily3.tag">06/15 截止（还剩 9 天）</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-dots">
+          <button class="carousel-dot active" onclick="goSlide(0)"></button>
+          <button class="carousel-dot" onclick="goSlide(1)"></button>
+          <button class="carousel-dot" onclick="goSlide(2)"></button>
+        </div>
+      </div>
+    </div>
+    <!-- Right: copy -->
+    <div class="hero-copy">
+      <div class="hero-badge" data-i18n="hero.badge">🎓 支持 SJTU · FDU · 任意 Canvas 院校</div>
+      <h1><span data-i18n="hero.title1">再也不会</span><br><span class="grad" data-i18n="hero.title2">漏掉 DDL</span></h1>
+      <p class="hero-sub" data-i18n="hero.sub">Canvas 作业自动监控 — 新作业发布立即推送，截止前精准提醒，已提交自动忽略，DDL 同步到苹果日历。</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="smoothScrollTo('#config')" data-i18n="hero.cta1">开始配置 →</button>
+        <a class="btn btn-secondary" href="https://github.com/leyjiang-ops/canvas-alert" target="_blank" data-i18n="hero.cta2">查看源码</a>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ── Features ──────────────────────────────────────────────────────────── -->
-<div class="features">
-  <div class="feat-card">
-    <div class="feat-icon">⚡</div>
-    <h3>准实时检测</h3>
-    <p>每 5 分钟扫描 Canvas 动态流，新作业发布几乎立即通知。</p>
-  </div>
-  <div class="feat-card">
-    <div class="feat-icon">🎯</div>
-    <h3>精准提醒</h3>
-    <p>发现作业时自动计算提醒时刻（due − 2h），到时间才触发，零冗余。</p>
-  </div>
-  <div class="feat-card">
-    <div class="feat-icon">✅</div>
-    <h3>自动过滤</h3>
-    <p>已提交的作业不发提醒，每条消息只发一次，不打扰。</p>
-  </div>
-  <div class="feat-card">
-    <div class="feat-icon">📱</div>
-    <h3>双渠道推送</h3>
-    <p>微信（Server酱）+ Telegram 同时送达，考试周不怕额度耗尽。</p>
-  </div>
-  <div class="feat-card" onclick="document.getElementById('subscribe').scrollIntoView({behavior:'smooth'})"
-       style="cursor:pointer">
-    <div class="feat-icon">📅</div>
-    <h3>苹果日历订阅</h3>
-    <p>一键订阅到 iPhone / Mac 日历，已提交自动消失，跨设备 iCloud 同步。</p>
-  </div>
-</div>
+<!-- ════════════════════════════════════════════════════════════════════════
+     FEATURES
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-grid reveal">
+      <!-- SVG: pentagon outline + pentagram star -->
+      <svg class="star-svg" viewBox="0 0 500 340" preserveAspectRatio="xMidYMid meet">
+        <!-- Pentagon (outer ring connecting adjacent points) -->
+        <polygon class="star-line-outer"
+          points="250,38 388,140 335,302 165,302 112,140" />
+        <!-- Pentagram (star: every-other-point connections) -->
+        <polygon class="star-line-inner"
+          points="250,38 335,302 112,140 388,140 165,302" />
+        <!-- Subtle glow fill for the inner pentagon -->
+        <polygon class="star-glow"
+          points="250,38 335,302 112,140 388,140 165,302" />
+        <!-- Dots at vertices -->
+        <circle cx="250" cy="38"  r="4" fill="var(--accent)" opacity=".35"/>
+        <circle cx="388" cy="140" r="4" fill="var(--accent)" opacity=".35"/>
+        <circle cx="335" cy="302" r="4" fill="var(--accent)" opacity=".35"/>
+        <circle cx="165" cy="302" r="4" fill="var(--accent)" opacity=".35"/>
+        <circle cx="112" cy="140" r="4" fill="var(--accent)" opacity=".35"/>
+      </svg>
 
-<!-- ── Config Form ────────────────────────────────────────────────────────── -->
-<section class="config-section" id="config">
-  <div class="section-title">🛠 生成你的配置</div>
-  <div class="section-sub">填写信息后点击「生成 JSON」，把结果粘贴到 GitHub Secrets 即可。</div>
-
-  <!-- Canvas -->
-  <div class="card">
-    <div class="card-title">① Canvas 账号</div>
-
-    <div class="field">
-      <label>学校</label>
-      <select id="school" onchange="onSchoolChange()">
-        <option value="https://oc.sjtu.edu.cn">上海交通大学 (SJTU)</option>
-        <option value="https://elearning.fudan.edu.cn">复旦大学 (FDU)</option>
-        <option value="custom">其他（手动填写）</option>
-      </select>
+      <!-- 5 cards at the 5 star tips -->
+      <div class="feat-card star-pt-1">
+        <div class="feat-icon">⚡</div>
+        <h3 data-i18n="feat.1.title">准实时检测</h3>
+        <p data-i18n="feat.1.desc">每 5 分钟扫描 Canvas 动态流，新作业发布几乎立即通知。</p>
+      </div>
+      <div class="feat-card star-pt-2">
+        <div class="feat-icon">🎯</div>
+        <h3 data-i18n="feat.2.title">精准提醒</h3>
+        <p data-i18n="feat.2.desc">自动计算提醒时刻（截止前 2 小时），到时间才触发，零冗余。</p>
+      </div>
+      <div class="feat-card star-pt-3" style="cursor:pointer" onclick="smoothScrollTo('#subscribe')">
+        <div class="feat-icon">📅</div>
+        <h3 data-i18n="feat.5.title">苹果日历订阅</h3>
+        <p data-i18n="feat.5.desc">一键订阅到 iPhone / Mac 日历，已提交自动消失，iCloud 跨设备同步。</p>
+      </div>
+      <div class="feat-card star-pt-4">
+        <div class="feat-icon">✅</div>
+        <h3 data-i18n="feat.3.title">自动过滤</h3>
+        <p data-i18n="feat.3.desc">已提交的作业不发提醒，每条消息只发一次，不打扰。</p>
+      </div>
+      <div class="feat-card star-pt-5">
+        <div class="feat-icon">📱</div>
+        <h3 data-i18n="feat.4.title">双渠道推送</h3>
+        <p data-i18n="feat.4.desc">微信（Server酱）+ Telegram 同时送达，考试周不怕额度耗尽。</p>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="field" id="custom-url-field" style="display:none">
-      <label>Canvas 网址 <span class="hint">例：https://canvas.university.edu</span></label>
-      <input type="text" id="custom-url" placeholder="https://..." />
+<!-- ════════════════════════════════════════════════════════════════════════
+     CONFIG WIZARD
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="wizard-section" id="config">
+  <div class="container">
+    <div class="sec-header reveal">
+      <h2 data-i18n="config.title"><span class="grad">生成</span>你的配置</h2>
+      <p data-i18n="config.sub">三步完成，生成的 JSON 粘贴到 GitHub Secrets 即可全自动运行。</p>
     </div>
+    <div class="wizard reveal">
+      <!-- Progress -->
+      <div class="wizard-progress">
+        <div class="wz-step active" data-wz="1"><div class="wz-num">1</div><span data-i18n="wz.s1">Canvas</span></div>
+        <div class="wz-line"></div>
+        <div class="wz-step" data-wz="2"><div class="wz-num">2</div><span data-i18n="wz.s2">Token</span></div>
+        <div class="wz-line"></div>
+        <div class="wz-step" data-wz="3"><div class="wz-num">3</div><span data-i18n="wz.s3">通知</span></div>
+        <div class="wz-line"></div>
+        <div class="wz-step" data-wz="4"><div class="wz-num">4</div><span data-i18n="wz.s4">完成</span></div>
+      </div>
 
-    <div class="field">
-      <label>
-        用户 ID <span class="hint">用于区分多个用户，英文+数字</span>
-      </label>
-      <input type="text" id="uid" placeholder="sjtu_yourname" />
+      <!-- Step 1: School + ID -->
+      <div class="wz-panel active" id="wz-1">
+        <div class="wz-panel-title" data-i18n="wz.1.title">选择你的学校</div>
+        <div class="wz-panel-sub" data-i18n="wz.1.sub">选择学校和设置用户 ID，用于区分多个用户。</div>
+        <div class="field">
+          <label data-i18n="wz.1.school">学校</label>
+          <select id="school" onchange="onSchoolChange()">
+            <option value="https://oc.sjtu.edu.cn">上海交通大学 (SJTU)</option>
+            <option value="https://elearning.fudan.edu.cn">复旦大学 (FDU)</option>
+            <option value="custom" data-i18n-opt="wz.1.custom">其他（手动填写）</option>
+          </select>
+        </div>
+        <div class="field" id="custom-url-field" style="display:none">
+          <label>Canvas URL <span class="hint" data-i18n="wz.1.url_hint">例：https://canvas.university.edu</span></label>
+          <input type="text" id="custom-url" placeholder="https://..." />
+        </div>
+        <div class="field">
+          <label data-i18n="wz.1.uid">用户 ID <span class="hint" data-i18n="wz.1.uid_hint">英文 + 数字，如 sjtu_tom</span></label>
+          <input type="text" id="uid" placeholder="sjtu_yourname" />
+        </div>
+      </div>
+
+      <!-- Step 2: Token -->
+      <div class="wz-panel" id="wz-2">
+        <div class="wz-panel-title" data-i18n="wz.2.title">输入 Canvas Token</div>
+        <div class="wz-panel-sub"><span data-i18n="wz.2.sub">在 Canvas 设置里生成 Access Token。</span> <a href="#" onclick="showTokenHelp(); return false" data-i18n="wz.2.how">如何获取？</a></div>
+        <div class="verify-row">
+          <div class="field">
+            <label>Canvas Access Token</label>
+            <div class="token-wrap">
+              <input type="password" id="canvas-token" placeholder="粘贴你的 token" />
+              <button class="token-toggle" onclick="toggleToken('canvas-token', this)" data-i18n="btn.show">显示</button>
+            </div>
+          </div>
+          <button class="btn-verify" id="verify-btn" onclick="verifyToken()" data-i18n="btn.verify">验证</button>
+        </div>
+        <div class="verify-msg" id="verify-msg">
+          <span class="status-dot status-idle"></span><span data-i18n="verify.idle">未验证</span>
+        </div>
+      </div>
+
+      <!-- Step 3: Notifications -->
+      <div class="wz-panel" id="wz-3">
+        <div class="wz-panel-title" data-i18n="wz.3.title">配置通知渠道</div>
+        <div class="wz-panel-sub" data-i18n="wz.3.sub">至少填一个，两个都填则同时推送。</div>
+        <div class="tabs">
+          <button class="tab active" onclick="switchTab('wechat', this)" data-i18n="wz.3.wechat">微信（Server酱）</button>
+          <button class="tab" onclick="switchTab('telegram', this)">Telegram</button>
+        </div>
+        <div class="tab-panel active" id="tab-wechat">
+          <div class="field">
+            <label>Server酱 SendKey <span class="hint"><a href="https://sct.ftqq.com" target="_blank" data-i18n="wz.3.sck_link">去 sct.ftqq.com 获取 →</a></span></label>
+            <div class="token-wrap">
+              <input type="password" id="sck" placeholder="SCT..." />
+              <button class="token-toggle" onclick="toggleToken('sck', this)" data-i18n="btn.show">显示</button>
+            </div>
+          </div>
+        </div>
+        <div class="tab-panel" id="tab-telegram">
+          <div class="field">
+            <label>Bot Token <span class="hint" data-i18n="wz.3.tg_hint">从 @BotFather 获取</span></label>
+            <div class="token-wrap">
+              <input type="password" id="tg-token" placeholder="123456:ABC..." />
+              <button class="token-toggle" onclick="toggleToken('tg-token', this)" data-i18n="btn.show">显示</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Chat ID <span class="hint" data-i18n="wz.3.chat_hint">向 bot 发消息后通过 getUpdates 获取</span></label>
+            <input type="text" id="tg-chat" placeholder="-100123456789" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Result -->
+      <div class="wz-panel" id="wz-4">
+        <div class="wz-panel-title" data-i18n="wz.4.title">🎉 配置已生成</div>
+        <div class="wz-panel-sub" data-i18n="wz.4.sub">复制下方 JSON，粘贴到 GitHub Secrets 的 USERS_CONFIG 字段。</div>
+        <div class="output-wrap">
+          <textarea id="output" readonly></textarea>
+          <button class="copy-float" id="copy-btn" onclick="copyOutput()" data-i18n="btn.copy">复制</button>
+        </div>
+        <p style="font-size:.78rem; color:var(--muted); margin-top:.8rem;" data-i18n="wz.4.warn">⚠️ JSON 包含你的 token，请勿分享给他人。</p>
+      </div>
+
+      <!-- Footer -->
+      <div class="wz-footer">
+        <button class="btn btn-secondary btn-sm" id="wz-prev" onclick="wizardPrev()" style="visibility:hidden" data-i18n="btn.prev">← 上一步</button>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-primary btn-sm" id="wz-next" onclick="wizardNext()" data-i18n="btn.next">下一步 →</button>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="verify-row">
+<!-- ════════════════════════════════════════════════════════════════════════
+     SUBSCRIBE
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="subscribe-section" id="subscribe">
+  <div class="container">
+    <div class="sec-header reveal">
+      <h2 data-i18n="sub.title">📅 <span class="grad">订阅</span>到苹果日历</h2>
+      <p data-i18n="sub.sub">订阅后 DDL 自动出现在 iPhone / iPad / Mac 的日历里，已提交的会自动消失。</p>
+    </div>
+    <div class="subscribe-card reveal">
       <div class="field">
-        <label>
-          Canvas Access Token
-          <span class="hint">
-            <a href="#" onclick="showTokenHelp(); return false">如何获取？</a>
-          </span>
-        </label>
+        <label data-i18n="sub.label">calendar_id 或 id <span class="hint" data-i18n="sub.hint">配置生成器会自动加随机 calendar_id，粘贴它最安全</span></label>
+        <input type="text" id="sub-uid" placeholder="a7f3k9zq2pmw8x4n" oninput="updateSubLinks()" />
+      </div>
+      <div class="field" id="sub-url-field" style="display:none">
+        <label data-i18n="sub.url_label">订阅 URL</label>
         <div class="token-wrap">
-          <input type="password" id="canvas-token" placeholder="粘贴你的 token" />
-          <button class="token-toggle" onclick="toggleToken('canvas-token', this)">显示</button>
+          <input type="text" id="sub-url" readonly />
+          <button class="token-toggle" onclick="copySubUrl()" data-i18n="btn.copy">复制</button>
         </div>
       </div>
-      <button class="btn-verify" id="verify-btn" onclick="verifyToken()">验证</button>
-    </div>
-    <div class="verify-msg" id="verify-msg">
-      <span class="status-dot status-idle"></span>未验证
-    </div>
-  </div>
-
-  <!-- 通知渠道 -->
-  <div class="card">
-    <div class="card-title">② 通知渠道（至少选一个）</div>
-
-    <div class="tabs">
-      <button class="tab active" onclick="switchTab('wechat', this)">微信（Server酱）</button>
-      <button class="tab" onclick="switchTab('telegram', this)">Telegram</button>
-    </div>
-
-    <div class="tab-panel active" id="tab-wechat">
-      <div class="field">
-        <label>
-          Server酱 SendKey
-          <span class="hint"><a href="https://sct.ftqq.com" target="_blank">去 sct.ftqq.com 获取 →</a></span>
-        </label>
-        <div class="token-wrap">
-          <input type="password" id="sck" placeholder="SCT..." />
-          <button class="token-toggle" onclick="toggleToken('sck', this)">显示</button>
+      <div id="sub-actions" style="display:none">
+        <div class="sub-btn-row">
+          <a class="btn btn-primary btn-sm" id="sub-webcal" href="#" data-i18n="sub.btn_add">📲 iPhone / Mac 一键添加</a>
+          <a class="btn btn-secondary btn-sm" id="sub-https" href="#" target="_blank" data-i18n="sub.btn_view">🌐 查看 .ics 原文</a>
         </div>
-      </div>
-    </div>
-
-    <div class="tab-panel" id="tab-telegram">
-      <div class="field">
-        <label>Bot Token <span class="hint">从 @BotFather 获取</span></label>
-        <div class="token-wrap">
-          <input type="password" id="tg-token" placeholder="123456:ABC..." />
-          <button class="token-toggle" onclick="toggleToken('tg-token', this)">显示</button>
+        <div class="sub-qr-wrap">
+          <div class="sub-qr-card">
+            <img id="sub-qr" alt="QR" />
+            <p class="sub-qr-hint" data-i18n="sub.qr_hint">用 iPhone 相机扫码 → 自动打开订阅</p>
+          </div>
+          <div class="sub-qr-side">
+            <h4>iPhone / iPad</h4>
+            <p data-i18n="sub.ios">用相机扫码或点击"一键添加" → 弹出"添加订阅日历" → 确认。</p>
+            <h4>macOS</h4>
+            <p data-i18n="sub.mac">日历 App → <code>文件 → 新建日历订阅</code> → 粘贴 URL → 自动更新选 15 分钟。</p>
+            <h4>Google Calendar</h4>
+            <p data-i18n="sub.google">设置 → 添加日历 → 通过网址添加 → 粘贴 https:// URL（不是 webcal）。</p>
+          </div>
         </div>
+        <p class="sub-note" data-i18n="sub.note">⚠️ iOS 自动拉取最快约 15 分钟一次（系统控制），手动下拉刷新可立即同步。calendar_id 使用随机串可提升隐私。</p>
       </div>
-      <div class="field">
-        <label>Chat ID <span class="hint">向 bot 发一条消息后访问 getUpdates 获取</span></label>
-        <input type="text" id="tg-chat" placeholder="-100123456789" />
-      </div>
-    </div>
-  </div>
-
-  <!-- Generate -->
-  <button class="generate-btn" onclick="generate()">⚡ 生成 USERS_CONFIG JSON</button>
-
-  <!-- Output -->
-  <div class="card" id="output-card" style="display:none; margin-top:1rem;">
-    <div class="card-title">生成结果</div>
-    <div class="output-wrap">
-      <textarea id="output" readonly></textarea>
-      <button class="copy-btn" id="copy-btn" onclick="copyOutput()">复制</button>
-    </div>
-    <p style="font-size:.82rem; color:var(--muted); margin-top:.8rem;">
-      ⚠️ 这个 JSON 包含你的 token，请勿分享给他人。
-    </p>
-  </div>
-</section>
-
-<!-- ── Subscribe Calendar ─────────────────────────────────────────────────── -->
-<section class="config-section" id="subscribe">
-  <div class="section-title">📅 订阅到苹果日历</div>
-  <div class="section-sub">
-    用户 ID 即配置时填的那个（如 <code>sjtu</code>）。订阅后所有 DDL 自动出现在
-    iPhone / iPad / Mac 的"日历"里，已提交的会自动消失。
-  </div>
-
-  <div class="card">
-    <div class="card-title">① 输入你的日历标识符</div>
-    <div class="field">
-      <label>
-        calendar_id 或 id
-        <span class="hint">
-          配置生成器会自动加 <code>calendar_id</code>（16 字符随机串），粘贴它最安全；
-          没设置就填 <code>id</code>
-        </span>
-      </label>
-      <input type="text" id="sub-uid" placeholder="例如：a7f3k9zq2pmw8x4n 或 sjtu" oninput="updateSubLinks()" />
-    </div>
-
-    <div class="field" id="sub-url-field" style="display:none">
-      <label>订阅 URL <span class="hint">点 webcal:// 链接 iPhone 会直接打开"添加订阅"</span></label>
-      <div class="token-wrap">
-        <input type="text" id="sub-url" readonly />
-        <button class="token-toggle" onclick="copySubUrl()">复制</button>
-      </div>
-    </div>
-
-    <div id="sub-actions" style="display:none">
-      <div class="sub-btn-row">
-        <a class="btn-primary sub-add-btn" id="sub-webcal" href="#">
-          📲 在 iPhone / Mac 一键添加
-        </a>
-        <a class="btn-secondary" id="sub-https" href="#" target="_blank">
-          🌐 查看 .ics 原文
-        </a>
-      </div>
-
-      <div class="sub-qr-wrap">
-        <div class="sub-qr-card">
-          <img id="sub-qr" alt="订阅二维码" />
-          <p class="sub-qr-hint">用 iPhone 相机扫码 → 自动打开订阅</p>
-        </div>
-        <div class="sub-qr-side">
-          <h4>iPhone / iPad</h4>
-          <p>用相机扫码，或点击上方"一键添加"按钮 → 系统弹窗"添加订阅日历" → 确认。</p>
-          <h4>macOS</h4>
-          <p>日历 App → 菜单栏 <code>文件 → 新建日历订阅</code> → 粘贴上方 URL → 自动更新选 15 分钟。</p>
-          <h4>Google Calendar</h4>
-          <p>设置 → 添加日历 → <strong>通过网址添加</strong> → 粘贴上方 https:// URL（不是 webcal）。</p>
-        </div>
-      </div>
-
-      <p class="sub-note">
-        ⚠️ iOS 自动拉取最快约 15 分钟一次（系统控制），手动下拉刷新可立即同步。<br/>
-        ⚠️ 当前 URL 用你的 id 拼成，外人若知道你的 id 可猜到链接。如需提升隐私，
-        在 USERS_CONFIG 里加 <code>"calendar_id": "随机串"</code> 字段，订阅 URL 会改成对应的随机名。
-      </p>
     </div>
   </div>
 </section>
 
-<!-- ── Steps ──────────────────────────────────────────────────────────────── -->
-<section class="config-section" id="steps">
-  <div class="section-title">🚀 部署步骤</div>
-  <div class="section-sub">只需三步，配置完成后全自动运行。</div>
-  <div class="card">
-    <ol class="steps">
-      <li>
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <h4>Fork 仓库</h4>
-          <p>访问 <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">canvas-alert</a>，点右上角 Fork，复制到你自己的账号下。</p>
+<!-- ════════════════════════════════════════════════════════════════════════
+     DEPLOY STEPS
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="deploy-section" id="deploy">
+  <div class="container">
+    <div class="sec-header reveal">
+      <h2 data-i18n="deploy.title">🚀 <span class="grad">部署</span>步骤</h2>
+      <p data-i18n="deploy.sub">只需三步，配置完成后全自动运行。</p>
+    </div>
+    <div class="deploy-steps">
+      <div class="deploy-card reveal">
+        <div class="deploy-num">1</div>
+        <div class="deploy-body">
+          <h4 data-i18n="deploy.1.title">Fork 仓库</h4>
+          <p><span data-i18n="deploy.1.desc">访问</span> <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">canvas-alert</a><span data-i18n="deploy.1.desc2">，点右上角 Fork。</span></p>
         </div>
-      </li>
-      <li>
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <h4>添加 Secret</h4>
-          <p>在你 fork 的仓库里：<code>Settings → Secrets → Actions → New secret</code><br/>
-             Name: <code>USERS_CONFIG</code>，Value 粘贴上方生成的 JSON。</p>
+      </div>
+      <div class="deploy-card reveal reveal-d1">
+        <div class="deploy-num">2</div>
+        <div class="deploy-body">
+          <h4 data-i18n="deploy.2.title">添加 Secret</h4>
+          <p data-i18n="deploy.2.desc">在 fork 的仓库里：<code>Settings → Secrets → Actions → New secret</code>，Name 填 <code>USERS_CONFIG</code>，Value 粘贴上方 JSON。</p>
         </div>
-      </li>
-      <li>
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <h4>启用 Actions 并测试</h4>
-          <p>进入 <code>Actions</code> 标签页，启用 workflows，手动触发「全量同步」验证是否收到通知。</p>
+      </div>
+      <div class="deploy-card reveal reveal-d2">
+        <div class="deploy-num">3</div>
+        <div class="deploy-body">
+          <h4 data-i18n="deploy.3.title">启用 Actions</h4>
+          <p data-i18n="deploy.3.desc">进入 Actions 标签页，启用 workflows，手动触发「全量同步」验证是否收到通知。</p>
         </div>
-      </li>
-    </ol>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ── Footer ─────────────────────────────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════════════════ -->
 <footer>
-  <p>Canvas Alert · 开源项目 ·
-     <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">GitHub</a>
-  </p>
-  <p style="margin-top:.4rem;">你的 token 仅在本地处理，不经过任何服务器。</p>
+  <p>Canvas Alert · <a href="https://github.com/leyjiang-ops/canvas-alert" target="_blank">GitHub</a></p>
+  <p style="margin-top:.4rem;" data-i18n="footer.privacy">你的 token 仅在本地处理，不经过任何服务器。</p>
 </footer>
 
-<!-- Token 获取说明弹窗 -->
-<div id="token-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.7);
-     z-index:200; align-items:center; justify-content:center;">
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
-       padding:2rem; max-width:420px; width:90%; position:relative;">
-    <button onclick="document.getElementById('token-modal').style.display='none'"
-            style="position:absolute;top:.8rem;right:.8rem;background:none;border:none;
-                   color:var(--muted);cursor:pointer;font-size:1.2rem;">✕</button>
-    <h3 style="margin-bottom:1rem;">如何获取 Canvas Token</h3>
-    <ol style="font-size:.88rem; color:var(--muted); padding-left:1.2rem; line-height:2;">
-      <li>登录你学校的 Canvas</li>
-      <li>点右上角头像 → <strong style="color:var(--text)">Account / Settings</strong></li>
-      <li>滚动到 <strong style="color:var(--text)">Approved Integrations</strong></li>
-      <li>点 <strong style="color:var(--text)">New Access Token</strong></li>
-      <li>填写用途描述，点生成，复制 token</li>
+<!-- ════════════════════════════════════════════════════════════════════════
+     TOKEN HELP MODAL
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="modal-bg" id="token-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="$('token-modal').classList.remove('open')">✕</button>
+    <h3 style="margin-bottom:1rem;" data-i18n="modal.title">如何获取 Canvas Token</h3>
+    <ol style="font-size:.88rem; color:var(--muted); padding-left:1.2rem; line-height:2.2;">
+      <li data-i18n="modal.s1">登录你学校的 Canvas</li>
+      <li><span data-i18n="modal.s2">点右上角头像 →</span> <strong style="color:var(--text)">Account / Settings</strong></li>
+      <li><span data-i18n="modal.s3">滚动到</span> <strong style="color:var(--text)">Approved Integrations</strong></li>
+      <li><span data-i18n="modal.s4">点</span> <strong style="color:var(--text)">New Access Token</strong></li>
+      <li data-i18n="modal.s5">填写用途描述，点生成，复制 token</li>
     </ol>
-    <p style="font-size:.8rem; color:var(--red); margin-top:1rem;">
-      ⚠️ Token 只显示一次，请立刻复制保存。
-    </p>
+    <p style="font-size:.8rem; color:var(--red); margin-top:1rem;" data-i18n="modal.warn">⚠️ Token 只显示一次，请立刻复制保存。</p>
   </div>
 </div>
 
 <script>
-// ── Helpers ───────────────────────────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════════════════════ */
 function $(id) { return document.getElementById(id); }
+function smoothScrollTo(sel) {
+  const el = document.querySelector(sel);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   THEME TOGGLE
+   ═══════════════════════════════════════════════════════════════════════════ */
+function getTheme() { return localStorage.getItem('theme') || 'light'; }
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  $('theme-icon-dark').style.display  = t === 'dark' ? '' : 'none';
+  $('theme-icon-light').style.display = t === 'light' ? '' : 'none';
+  localStorage.setItem('theme', t);
+}
+function toggleTheme() { applyTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
+applyTheme(getTheme());
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   i18n
+   ═══════════════════════════════════════════════════════════════════════════ */
+let currentLang = localStorage.getItem('lang') || 'zh';
+
+const I18N = {
+  // Nav
+  'nav.config':  { zh: '配置',     en: 'Config' },
+  'nav.calendar':{ zh: '日历订阅', en: 'Calendar' },
+  'nav.deploy':  { zh: '部署',     en: 'Deploy' },
+  // Hero
+  'hero.badge':  { zh: '🎓 支持 SJTU · FDU · 任意 Canvas 院校', en: '🎓 SJTU · FDU · Any Canvas School' },
+  'hero.title1': { zh: '再也不会', en: 'Never Miss' },
+  'hero.title2': { zh: '漏掉 DDL', en: 'a Deadline' },
+  'hero.sub':    { zh: 'Canvas 作业自动监控 — 新作业发布立即推送，截止前精准提醒，已提交自动忽略，DDL 同步到苹果日历。',
+                   en: 'Automated Canvas monitoring — instant push on new assignments, precise deadline reminders, auto-skip submitted work, and DDL sync to Apple Calendar.' },
+  'hero.cta1':   { zh: '开始配置 →', en: 'Get Started →' },
+  'hero.cta2':   { zh: '查看源码',   en: 'Source Code' },
+  // Features
+  'feat.1.title':{ zh: '准实时检测', en: 'Near Real-time' },
+  'feat.1.desc': { zh: '每 5 分钟扫描 Canvas 动态流，新作业发布几乎立即通知。', en: 'Scans Canvas activity stream every 5 min. New assignments trigger instant push.' },
+  'feat.2.title':{ zh: '精准提醒', en: 'Smart Reminders' },
+  'feat.2.desc': { zh: '自动计算提醒时刻（截止前 2 小时），到时间才触发，零冗余。', en: 'Auto-calculates remind time (2h before due). Fires exactly on time, zero noise.' },
+  'feat.3.title':{ zh: '自动过滤', en: 'Auto Filter' },
+  'feat.3.desc': { zh: '已提交的作业不发提醒，每条消息只发一次，不打扰。', en: 'Submitted work is auto-skipped. Each alert fires once — no spam.' },
+  'feat.4.title':{ zh: '双渠道推送', en: 'Dual Push' },
+  'feat.4.desc': { zh: '微信（Server酱）+ Telegram 同时送达，考试周不怕额度耗尽。', en: 'WeChat (ServerChan) + Telegram. Dual channels for exam weeks.' },
+  'feat.5.title':{ zh: '苹果日历订阅', en: 'Calendar Sync' },
+  'feat.5.desc': { zh: '一键订阅到 iPhone / Mac 日历，已提交自动消失，iCloud 跨设备同步。', en: 'One-click subscribe to iPhone / Mac Calendar. Submitted items auto-vanish. iCloud synced.' },
+  // Config wizard
+  'config.title':{ zh: '<span class="grad">生成</span>你的配置', en: '<span class="grad">Generate</span> Your Config' },
+  'config.sub':  { zh: '三步完成，生成的 JSON 粘贴到 GitHub Secrets 即可全自动运行。', en: 'Three steps. Paste the JSON into GitHub Secrets and it runs automatically.' },
+  'wz.s1': { zh: 'Canvas', en: 'Canvas' },
+  'wz.s2': { zh: 'Token',  en: 'Token' },
+  'wz.s3': { zh: '通知',   en: 'Notify' },
+  'wz.s4': { zh: '完成',   en: 'Done' },
+  'wz.1.title': { zh: '选择你的学校', en: 'Choose Your School' },
+  'wz.1.sub':   { zh: '选择学校和设置用户 ID，用于区分多个用户。', en: 'Select school and set a user ID to distinguish multiple users.' },
+  'wz.1.school':{ zh: '学校', en: 'School' },
+  'wz.1.custom':{ zh: '其他（手动填写）', en: 'Other (manual)' },
+  'wz.1.url_hint':{ zh: '例：https://canvas.university.edu', en: 'e.g. https://canvas.university.edu' },
+  'wz.1.uid':   { zh: '用户 ID <span class="hint">英文 + 数字，如 sjtu_tom</span>', en: 'User ID <span class="hint">alphanumeric, e.g. sjtu_tom</span>' },
+  'wz.1.uid_hint':{ zh: '英文 + 数字，如 sjtu_tom', en: 'alphanumeric, e.g. sjtu_tom' },
+  'wz.2.title': { zh: '输入 Canvas Token', en: 'Enter Canvas Token' },
+  'wz.2.sub':   { zh: '在 Canvas 设置里生成 Access Token。', en: 'Generate an Access Token in Canvas settings.' },
+  'wz.2.how':   { zh: '如何获取？', en: 'How to get one?' },
+  'wz.3.title': { zh: '配置通知渠道', en: 'Configure Notifications' },
+  'wz.3.sub':   { zh: '至少填一个，两个都填则同时推送。', en: 'Fill at least one. Both will fire simultaneously.' },
+  'wz.3.wechat':{ zh: '微信（Server酱）', en: 'WeChat (ServerChan)' },
+  'wz.3.sck_link':{ zh: '去 sct.ftqq.com 获取 →', en: 'Get at sct.ftqq.com →' },
+  'wz.3.tg_hint':{ zh: '从 @BotFather 获取', en: 'Get from @BotFather' },
+  'wz.3.chat_hint':{ zh: '向 bot 发消息后通过 getUpdates 获取', en: 'Send a msg to bot, then use getUpdates' },
+  'wz.4.title': { zh: '🎉 配置已生成', en: '🎉 Config Generated' },
+  'wz.4.sub':   { zh: '复制下方 JSON，粘贴到 GitHub Secrets 的 USERS_CONFIG 字段。', en: 'Copy the JSON below and paste it into your GitHub Secrets as USERS_CONFIG.' },
+  'wz.4.warn':  { zh: '⚠️ JSON 包含你的 token，请勿分享给他人。', en: '⚠️ This JSON contains your token. Do not share it.' },
+  // Buttons
+  'btn.show':   { zh: '显示', en: 'Show' },
+  'btn.verify': { zh: '验证', en: 'Verify' },
+  'btn.copy':   { zh: '复制', en: 'Copy' },
+  'btn.prev':   { zh: '← 上一步', en: '← Back' },
+  'btn.next':   { zh: '下一步 →', en: 'Next →' },
+  'btn.gen':    { zh: '⚡ 生成 JSON', en: '⚡ Generate JSON' },
+  'btn.restart':{ zh: '重新配置', en: 'Restart' },
+  'verify.idle':{ zh: '未验证', en: 'Not verified' },
+  // Subscribe
+  'sub.title':  { zh: '📅 <span class="grad">订阅</span>到苹果日历', en: '📅 <span class="grad">Subscribe</span> to Apple Calendar' },
+  'sub.sub':    { zh: '订阅后 DDL 自动出现在 iPhone / iPad / Mac 的日历里，已提交的会自动消失。', en: 'DDLs auto-appear on your iPhone / iPad / Mac calendar. Submitted items vanish.' },
+  'sub.label':  { zh: 'calendar_id 或 id <span class="hint">配置生成器会自动加随机 calendar_id，粘贴它最安全</span>', en: 'calendar_id or id <span class="hint">The config generator auto-creates a random calendar_id</span>' },
+  'sub.hint':   { zh: '配置生成器会自动加随机 calendar_id，粘贴它最安全', en: 'The config generator auto-creates a random calendar_id' },
+  'sub.url_label':{ zh: '订阅 URL', en: 'Subscribe URL' },
+  'sub.btn_add':{ zh: '📲 iPhone / Mac 一键添加', en: '📲 Add to iPhone / Mac' },
+  'sub.btn_view':{ zh: '🌐 查看 .ics 原文', en: '🌐 View .ics' },
+  'sub.qr_hint':{ zh: '用 iPhone 相机扫码 → 自动打开订阅', en: 'Scan with iPhone camera → auto-opens subscription' },
+  'sub.ios':    { zh: '用相机扫码或点击"一键添加" → 弹出"添加订阅日历" → 确认。', en: 'Scan QR or tap "Add" → "Subscribe to Calendar" popup → Confirm.' },
+  'sub.mac':    { zh: '日历 App → <code>文件 → 新建日历订阅</code> → 粘贴 URL → 自动更新选 15 分钟。', en: 'Calendar app → <code>File → New Calendar Subscription</code> → paste URL → update every 15 min.' },
+  'sub.google': { zh: '设置 → 添加日历 → 通过网址添加 → 粘贴 https:// URL（不是 webcal）。', en: 'Settings → Add calendar → From URL → paste the https:// URL (not webcal).' },
+  'sub.note':   { zh: '⚠️ iOS 自动拉取最快约 15 分钟一次（系统控制），手动下拉刷新可立即同步。calendar_id 使用随机串可提升隐私。', en: '⚠️ iOS auto-fetches ~every 15 min (system controlled). Pull to refresh for instant sync. Random calendar_id improves privacy.' },
+  // Deploy
+  'deploy.title':{ zh: '🚀 <span class="grad">部署</span>步骤', en: '🚀 <span class="grad">Deploy</span> Steps' },
+  'deploy.sub':  { zh: '只需三步，配置完成后全自动运行。', en: 'Three steps. Fully automated after setup.' },
+  'deploy.1.title':{ zh: 'Fork 仓库', en: 'Fork the Repo' },
+  'deploy.1.desc': { zh: '访问', en: 'Go to' },
+  'deploy.1.desc2':{ zh: '，点右上角 Fork。', en: ' and click Fork.' },
+  'deploy.2.title':{ zh: '添加 Secret', en: 'Add Secret' },
+  'deploy.2.desc': { zh: '在 fork 的仓库里：<code>Settings → Secrets → Actions → New secret</code>，Name 填 <code>USERS_CONFIG</code>，Value 粘贴上方 JSON。', en: 'In your forked repo: <code>Settings → Secrets → Actions → New secret</code>. Name: <code>USERS_CONFIG</code>, Value: paste the JSON.' },
+  'deploy.3.title':{ zh: '启用 Actions', en: 'Enable Actions' },
+  'deploy.3.desc': { zh: '进入 Actions 标签页，启用 workflows，手动触发「全量同步」验证是否收到通知。', en: 'Go to the Actions tab, enable workflows, and manually trigger "Full Sync" to verify.' },
+  // Footer
+  'footer.privacy':{ zh: '你的 token 仅在本地处理，不经过任何服务器。', en: 'Your token is processed locally. It never touches any server.' },
+  // Modal
+  'modal.title':{ zh: '如何获取 Canvas Token', en: 'How to Get a Canvas Token' },
+  'modal.s1': { zh: '登录你学校的 Canvas', en: 'Log in to your school\'s Canvas' },
+  'modal.s2': { zh: '点右上角头像 →', en: 'Click avatar (top-right) →' },
+  'modal.s3': { zh: '滚动到', en: 'Scroll to' },
+  'modal.s4': { zh: '点', en: 'Click' },
+  'modal.s5': { zh: '填写用途描述，点生成，复制 token', en: 'Enter a purpose, generate, and copy the token' },
+  'modal.warn':{ zh: '⚠️ Token 只显示一次，请立刻复制保存。', en: '⚠️ Token is shown only once — copy it immediately.' },
+  // Mockup slides
+  'mock.new':        { zh: '📋 新作业发布（3 项）',      en: '📋 New Assignments (3)' },
+  'mock.hw1.title':  { zh: '[作业] 线性代数',            en: '[HW] Linear Algebra' },
+  'mock.hw1.sub':    { zh: '第三章矩阵运算习题',          en: 'Ch.3 Matrix Operations' },
+  'mock.hw1.tag':    { zh: '06/10 23:59 截止',           en: 'Due 06/10 23:59' },
+  'mock.hw2.title':  { zh: '[Quiz] 大学物理',            en: '[Quiz] Physics' },
+  'mock.hw2.sub':    { zh: '第五章热力学 Quiz',           en: 'Ch.5 Thermodynamics Quiz' },
+  'mock.hw2.tag':    { zh: '06/12 18:00 截止',           en: 'Due 06/12 18:00' },
+  'mock.hw3.title':  { zh: '[作业] 程序设计',             en: '[HW] Programming' },
+  'mock.hw3.sub':    { zh: 'Lab 4: 链表与二叉树',        en: 'Lab 4: Linked List & BST' },
+  'mock.hw3.tag':    { zh: '06/14 23:59 截止',           en: 'Due 06/14 23:59' },
+  'mock.alert.header':{ zh: '⚠️ 2 项即将截止！',         en: '⚠️ 2 Items Due Soon!' },
+  'mock.alert1.title':{ zh: '[作业] 线性代数',            en: '[HW] Linear Algebra' },
+  'mock.alert1.sub':  { zh: '第三章矩阵运算习题',         en: 'Ch.3 Matrix Operations' },
+  'mock.alert1.tag':  { zh: '还剩 1 小时 42 分',         en: '1h 42min left' },
+  'mock.alert2.title':{ zh: '[Quiz] 大学物理',            en: '[Quiz] Physics' },
+  'mock.alert2.sub':  { zh: '第五章热力学 Quiz',          en: 'Ch.5 Thermodynamics Quiz' },
+  'mock.alert2.tag':  { zh: '还剩 45 分钟',              en: '45 min left' },
+  'mock.daily.header':{ zh: '📚 今日课程汇总（5 项）',     en: '📚 Daily Summary (5)' },
+  'mock.daily1.title':{ zh: '[作业] 数据结构',            en: '[HW] Data Structures' },
+  'mock.daily1.tag':  { zh: '已提交 ✓',                  en: 'Submitted ✓' },
+  'mock.daily2.title':{ zh: '[作业] 概率论',              en: '[HW] Probability' },
+  'mock.daily2.tag':  { zh: '明天 23:59 截止',            en: 'Due tomorrow 23:59' },
+  'mock.daily3.title':{ zh: '[Quiz] 英语写作',            en: '[Quiz] English Writing' },
+  'mock.daily3.tag':  { zh: '06/15 截止（还剩 9 天）',     en: 'Due 06/15 (9 days left)' },
+};
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  $('lang-btn').querySelector('span').textContent = lang === 'zh' ? 'EN' : '中';
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const entry = I18N[key];
+    if (entry) el.innerHTML = entry[lang] || entry.zh;
+  });
+  // Update wizard next button text if on last step
+  updateWizardButtons();
+}
+function toggleLang() { applyLang(currentLang === 'zh' ? 'en' : 'zh'); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOCKUP CAROUSEL
+   ═══════════════════════════════════════════════════════════════════════════ */
+let currentSlide = 0;
+const SLIDE_COUNT = 3;
+let slideTimer;
+
+function goSlide(n) {
+  currentSlide = n;
+  document.querySelectorAll('.phone-slide').forEach((s, i) => s.classList.toggle('active', i === n));
+  document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === n));
+  // Re-trigger card animations
+  const activeSlide = $('slide-' + n);
+  activeSlide.querySelectorAll('.mock-card').forEach(c => {
+    c.style.animation = 'none'; c.offsetHeight; c.style.animation = '';
+  });
+  resetSlideTimer();
+}
+function nextSlide() { goSlide((currentSlide + 1) % SLIDE_COUNT); }
+function resetSlideTimer() { clearInterval(slideTimer); slideTimer = setInterval(nextSlide, 3500); }
+resetSlideTimer();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WIZARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+let wizStep = 1;
+const WIZ_TOTAL = 4;
+
+function updateWizardButtons() {
+  $('wz-prev').style.visibility = wizStep === 1 ? 'hidden' : '';
+  const nextBtn = $('wz-next');
+  if (wizStep === 3) {
+    nextBtn.innerHTML = I18N['btn.gen']?.[currentLang] || '⚡ 生成 JSON';
+  } else if (wizStep === 4) {
+    nextBtn.innerHTML = I18N['btn.restart']?.[currentLang] || '重新配置';
+  } else {
+    nextBtn.innerHTML = I18N['btn.next']?.[currentLang] || '下一步 →';
+  }
+}
+
+function setWizStep(n) {
+  wizStep = n;
+  document.querySelectorAll('.wz-panel').forEach((p, i) => p.classList.toggle('active', i === n - 1));
+  document.querySelectorAll('.wz-step').forEach(s => {
+    const sn = +s.dataset.wz;
+    s.classList.toggle('active', sn === n);
+    s.classList.toggle('done', sn < n);
+  });
+  document.querySelectorAll('.wz-line').forEach((l, i) => l.classList.toggle('done', i < n - 1));
+  updateWizardButtons();
+}
+
+function wizardNext() {
+  if (wizStep === 1) {
+    if (!$('uid').value.trim()) return shakeField($('uid'));
+    setWizStep(2);
+  } else if (wizStep === 2) {
+    if (!$('canvas-token').value.trim()) return shakeField($('canvas-token'));
+    setWizStep(3);
+  } else if (wizStep === 3) {
+    if (!$('sck').value.trim() && !$('tg-token').value.trim()) {
+      return alert(currentLang === 'zh' ? '请至少填写一个通知渠道' : 'Please fill at least one notification channel');
+    }
+    generate();
+    setWizStep(4);
+  } else if (wizStep === 4) {
+    setWizStep(1);
+  }
+}
+function wizardPrev() { if (wizStep > 1) setWizStep(wizStep - 1); }
+
+function shakeField(el) {
+  el.style.borderColor = 'var(--red)';
+  el.style.animation = 'none'; el.offsetHeight;
+  el.style.animation = 'shake .4s ease';
+  el.focus();
+  setTimeout(() => { el.style.borderColor = ''; el.style.animation = ''; }, 600);
+}
+
+/* shake keyframes injected once */
+if (!document.querySelector('#shake-style')) {
+  const s = document.createElement('style');
+  s.id = 'shake-style';
+  s.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}';
+  document.head.appendChild(s);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FORM LOGIC (preserved from original)
+   ═══════════════════════════════════════════════════════════════════════════ */
 function getCanvasUrl() {
   const school = $('school').value;
   if (school === 'custom') return $('custom-url').value.trim().replace(/\/$/, '');
   return school;
 }
-
 function onSchoolChange() {
-  const isCustom = $('school').value === 'custom';
-  $('custom-url-field').style.display = isCustom ? 'block' : 'none';
+  $('custom-url-field').style.display = $('school').value === 'custom' ? 'block' : 'none';
 }
-
 function toggleToken(id, btn) {
   const inp = $(id);
   const show = inp.type === 'password';
   inp.type = show ? 'text' : 'password';
-  btn.textContent = show ? '隐藏' : '显示';
+  btn.textContent = show
+    ? (currentLang === 'zh' ? '隐藏' : 'Hide')
+    : (currentLang === 'zh' ? '显示' : 'Show');
 }
-
-function showTokenHelp() {
-  $('token-modal').style.display = 'flex';
-}
-
+function showTokenHelp() { $('token-modal').classList.add('open'); }
 function switchTab(name, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -651,48 +1261,41 @@ function switchTab(name, btn) {
   $('tab-' + name).classList.add('active');
 }
 
-// ── Verify Canvas Token ───────────────────────────────────────────────────
+// Verify token
 async function verifyToken() {
   const url   = getCanvasUrl();
   const token = $('canvas-token').value.trim();
   const btn   = $('verify-btn');
   const msg   = $('verify-msg');
-
   if (!url || !token) {
     msg.className = 'verify-msg fail';
-    msg.innerHTML = '<span class="status-dot status-fail"></span>请先填写 Canvas 地址和 Token';
+    msg.innerHTML = '<span class="status-dot status-fail"></span>' +
+      (currentLang === 'zh' ? '请先填写 Canvas 地址和 Token' : 'Please fill Canvas URL and Token first');
     return;
   }
-
   btn.disabled = true;
-  btn.textContent = '验证中…';
+  btn.textContent = currentLang === 'zh' ? '验证中…' : 'Verifying…';
   msg.className = 'verify-msg';
-  msg.innerHTML = '<span class="status-dot status-idle"></span>请求中…';
-
+  msg.innerHTML = '<span class="status-dot status-idle"></span>' + (currentLang === 'zh' ? '请求中…' : 'Requesting…');
   try {
-    const resp = await fetch(`${url}/api/v1/users/self`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const resp = await fetch(`${url}/api/v1/users/self`, { headers: { Authorization: `Bearer ${token}` } });
     if (resp.ok) {
       const user = await resp.json();
       msg.className = 'verify-msg ok';
-      msg.innerHTML = `<span class="status-dot status-ok"></span>验证成功 — ${user.name || 'Canvas 用户'}`;
+      msg.innerHTML = `<span class="status-dot status-ok"></span>${currentLang === 'zh' ? '验证成功' : 'Verified'} — ${user.name || 'Canvas User'}`;
     } else {
       msg.className = 'verify-msg fail';
-      msg.innerHTML = `<span class="status-dot status-fail"></span>验证失败（HTTP ${resp.status}）— Token 无效或地址错误`;
+      msg.innerHTML = `<span class="status-dot status-fail"></span>${currentLang === 'zh' ? '验证失败' : 'Failed'}（HTTP ${resp.status}）`;
     }
-  } catch (e) {
-    // 浏览器跨域限制，API 可能不允许直接请求
+  } catch {
     msg.className = 'verify-msg fail';
-    msg.innerHTML = `<span class="status-dot status-fail"></span>
-      无法直接验证（跨域限制）— Token 格式看起来正常，继续配置即可`;
+    msg.innerHTML = `<span class="status-dot status-fail"></span>${currentLang === 'zh' ? '跨域限制，Token 格式正常，继续即可' : 'CORS blocked — token format looks fine, proceed'}`;
   }
-
   btn.disabled = false;
-  btn.textContent = '重新验证';
+  btn.textContent = currentLang === 'zh' ? '重新验证' : 'Re-verify';
 }
 
-// ── Random calendar_id ────────────────────────────────────────────────────
+// Random calendar_id
 function randomCalendarId(len = 16) {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
   const buf = new Uint8Array(len);
@@ -702,109 +1305,86 @@ function randomCalendarId(len = 16) {
   return out;
 }
 
-// ── Generate JSON ─────────────────────────────────────────────────────────
+// Generate JSON
 function generate() {
-  const url   = getCanvasUrl();
-  const uid   = $('uid').value.trim();
-  const token = $('canvas-token').value.trim();
-  const sck   = $('sck').value.trim();
-  const tgTok = $('tg-token').value.trim();
-  const tgChat= $('tg-chat').value.trim();
+  const url    = getCanvasUrl();
+  const uid    = $('uid').value.trim();
+  const token  = $('canvas-token').value.trim();
+  const sck    = $('sck').value.trim();
+  const tgTok  = $('tg-token').value.trim();
+  const tgChat = $('tg-chat').value.trim();
+  if (!url || !uid || !token) return;
 
-  if (!url)   return alert('请选择或填写学校 Canvas 地址');
-  if (!uid)   return alert('请填写用户 ID（英文）');
-  if (!token) return alert('请填写 Canvas Token');
-  if (!sck && !tgTok) return alert('请至少填写一个通知渠道');
-
-  // 读取现有 output（多用户场景）
   let arr = [];
-  try {
-    const existing = $('output').value.trim();
-    if (existing) arr = JSON.parse(existing);
-  } catch {}
+  try { const ex = $('output').value.trim(); if (ex) arr = JSON.parse(ex); } catch {}
+  const existing = arr.find(u => u.id === uid);
+  const calendarId = existing?.calendar_id || randomCalendarId();
 
-  // 同 id 已存在则复用旧的 calendar_id（避免日历订阅失效），否则新生成
-  const existingUser = arr.find(u => u.id === uid);
-  const calendarId   = existingUser?.calendar_id || randomCalendarId();
+  const user = { id: uid, canvas_url: url, canvas_token: token, calendar_id: calendarId };
+  if (sck)    user.serverchan_key     = sck;
+  if (tgTok)  user.telegram_bot_token = tgTok;
+  if (tgChat) user.telegram_chat_id   = tgChat;
 
-  const user = {
-    id:           uid,
-    canvas_url:   url,
-    canvas_token: token,
-    calendar_id:  calendarId,
-  };
-  if (sck)   user.serverchan_key = sck;
-  if (tgTok) user.telegram_bot_token = tgTok;
-  if (tgChat)user.telegram_chat_id   = tgChat;
-
-  // 如果 id 已存在则更新，否则追加
   const idx = arr.findIndex(u => u.id === uid);
-  if (idx >= 0) arr[idx] = user;
-  else arr.push(user);
+  if (idx >= 0) arr[idx] = user; else arr.push(user);
 
   $('output').value = JSON.stringify(arr, null, 2);
-  $('output-card').style.display = 'block';
-  $('output-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  $('copy-btn').textContent = '复制';
-  $('copy-btn').className = 'copy-btn';
-
-  // 把刚生成的 calendar_id 自动填进日历订阅区，省得用户复制
   $('sub-uid').value = calendarId;
   updateSubLinks();
 }
 
-// ── Subscribe links ───────────────────────────────────────────────────────
-function getSubBaseUrl() {
-  // 同源：用页面所在的 GitHub Pages 路径（fork 后也能用）
-  const { origin, pathname } = window.location;
-  const dir = pathname.replace(/[^/]*$/, '');   // 去掉文件名，留目录
-  return origin + dir;
+// Copy
+function copyOutput() {
+  navigator.clipboard.writeText($('output').value).then(() => {
+    const btn = $('copy-btn');
+    btn.textContent = currentLang === 'zh' ? '已复制 ✓' : 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = currentLang === 'zh' ? '复制' : 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
 }
 
+// Subscribe
+function getSubBaseUrl() {
+  const { origin, pathname } = window.location;
+  return origin + pathname.replace(/[^/]*$/, '');
+}
 function updateSubLinks() {
   const uid = $('sub-uid').value.trim();
-  if (!uid) {
-    $('sub-url-field').style.display = 'none';
-    $('sub-actions').style.display   = 'none';
-    return;
-  }
+  if (!uid) { $('sub-url-field').style.display = 'none'; $('sub-actions').style.display = 'none'; return; }
   const safe   = encodeURIComponent(uid);
-  const base   = getSubBaseUrl();                     // https://user.github.io/canvas-alert/
+  const base   = getSubBaseUrl();
   const https  = `${base}calendar_${safe}.ics`;
   const webcal = https.replace(/^https?:/, 'webcal:');
-
-  $('sub-url').value           = https;
-  $('sub-webcal').href         = webcal;
-  $('sub-https').href          = https;
-  $('sub-qr').src              = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=${encodeURIComponent(webcal)}`;
+  $('sub-url').value   = https;
+  $('sub-webcal').href = webcal;
+  $('sub-https').href  = https;
+  $('sub-qr').src      = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=0&data=${encodeURIComponent(webcal)}`;
   $('sub-url-field').style.display = 'block';
   $('sub-actions').style.display   = 'block';
 }
-
 function copySubUrl() {
   const text = $('sub-url').value;
   if (!text) return;
   navigator.clipboard.writeText(text).then(() => {
     const btn = event.target;
     const old = btn.textContent;
-    btn.textContent = '已复制 ✓';
+    btn.textContent = currentLang === 'zh' ? '已复制 ✓' : 'Copied ✓';
     setTimeout(() => { btn.textContent = old; }, 1500);
   });
 }
 
-// ── Copy ──────────────────────────────────────────────────────────────────
-function copyOutput() {
-  const text = $('output').value;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = $('copy-btn');
-    btn.textContent = '已复制 ✓';
-    btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = '复制';
-      btn.classList.remove('copied');
-    }, 2000);
-  });
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL REVEAL (IntersectionObserver)
+   ═══════════════════════════════════════════════════════════════════════════ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════════════════════════════ */
+applyLang(currentLang);
 </script>
 </body>
 </html>
