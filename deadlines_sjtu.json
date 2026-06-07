@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-07T10:10:16.941073+00:00"
+    "last_stream_check": "2026-06-07T10:15:48.317063+00:00"
   },
   "assignment_412866": {
     "id": "assignment_412866",
@@ -12,7 +12,7 @@
     "due": "2026-06-07T15:59:59Z",
     "remind_at": "2026-06-07T13:59:59+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "assignment_412897": {
     "id": "assignment_412897",
@@ -36,7 +36,7 @@
     "due": "2026-06-07T15:59:59Z",
     "remind_at": "2026-06-07T13:59:59+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "assignment_412262": {
     "id": "assignment_412262",
