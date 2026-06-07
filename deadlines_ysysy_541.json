@@ -1,42 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-07T15:55:23.541273+00:00"
-  },
-  "assignment_405051": {
-    "id": "assignment_405051",
-    "raw_id": 405051,
-    "course_id": 87136,
-    "course": "电工学实验",
-    "title": "比例、加减法运算电路实验报告",
-    "type": "作业",
-    "due": "2026-06-07T15:59:59Z",
-    "remind_at": "2026-06-07T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "assignment_405052": {
-    "id": "assignment_405052",
-    "raw_id": 405052,
-    "course_id": 87136,
-    "course": "电工学实验",
-    "title": "波形发生器电路实验报告",
-    "type": "作业",
-    "due": "2026-06-07T15:59:59Z",
-    "remind_at": "2026-06-07T13:59:59+00:00",
-    "reminded": true,
-    "submitted": false
-  },
-  "assignment_405053": {
-    "id": "assignment_405053",
-    "raw_id": 405053,
-    "course_id": 87136,
-    "course": "电工学实验",
-    "title": "555定时器电路实验报告",
-    "type": "作业",
-    "due": "2026-06-07T15:59:59Z",
-    "remind_at": "2026-06-07T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
+    "last_stream_check": "2026-06-07T16:00:28.992934+00:00"
   },
   "assignment_412444": {
     "id": "assignment_412444",

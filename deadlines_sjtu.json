@@ -1,18 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-07T15:55:15.147696+00:00"
-  },
-  "assignment_412866": {
-    "id": "assignment_412866",
-    "raw_id": 412866,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 2",
-    "type": "作业",
-    "due": "2026-06-07T15:59:59Z",
-    "remind_at": "2026-06-07T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
+    "last_stream_check": "2026-06-07T16:00:20.207133+00:00"
   },
   "assignment_412897": {
     "id": "assignment_412897",
@@ -24,30 +12,6 @@
     "due": "2026-06-09T15:59:59Z",
     "remind_at": "2026-06-09T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
-  },
-  "assignment_411890": {
-    "id": "assignment_411890",
-    "raw_id": 411890,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "PA1_report",
-    "type": "作业",
-    "due": "2026-06-07T15:59:59Z",
-    "remind_at": "2026-06-07T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "assignment_412262": {
-    "id": "assignment_412262",
-    "raw_id": 412262,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "PA1_code",
-    "type": "作业",
-    "due": "2026-06-07T15:59:59Z",
-    "remind_at": "2026-06-07T13:59:59+00:00",
-    "reminded": true,
     "submitted": false
   },
   "assignment_413944": {
