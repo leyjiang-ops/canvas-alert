@@ -12,7 +12,7 @@
     "due": "2026-06-07T15:59:59Z",
     "remind_at": "2026-06-07T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_412897": {
     "id": "assignment_412897",
@@ -36,7 +36,7 @@
     "due": "2026-06-07T15:59:59Z",
     "remind_at": "2026-06-07T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_412262": {
     "id": "assignment_412262",
