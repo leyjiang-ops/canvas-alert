@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-11T15:00:40.644697+00:00"
+    "last_stream_check": "2026-06-11T15:06:02.718488+00:00"
   },
   "assignment_413944": {
     "id": "assignment_413944",
@@ -12,7 +12,7 @@
     "due": "2026-06-12T15:59:59Z",
     "remind_at": "2026-06-12T13:59:59+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "assignment_414189": {
     "id": "assignment_414189",
@@ -47,138 +47,6 @@
     "type": "作业",
     "due": "2026-06-26T15:59:59Z",
     "remind_at": "2026-06-26T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_411230": {
-    "id": "assignment_411230",
-    "raw_id": 411230,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 0",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "assignment_412112": {
-    "id": "assignment_412112",
-    "raw_id": 412112,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 1",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "assignment_412866": {
-    "id": "assignment_412866",
-    "raw_id": 412866,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 2",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "assignment_414728": {
-    "id": "assignment_414728",
-    "raw_id": 414728,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 4",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414729": {
-    "id": "assignment_414729",
-    "raw_id": 414729,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 5",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414730": {
-    "id": "assignment_414730",
-    "raw_id": 414730,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 6",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414731": {
-    "id": "assignment_414731",
-    "raw_id": 414731,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 7",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414732": {
-    "id": "assignment_414732",
-    "raw_id": 414732,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 8",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414733": {
-    "id": "assignment_414733",
-    "raw_id": 414733,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 9",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414734": {
-    "id": "assignment_414734",
-    "raw_id": 414734,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 10",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_414735": {
-    "id": "assignment_414735",
-    "raw_id": 414735,
-    "course_id": 92355,
-    "course": "ECE2300JSU2026-1",
-    "title": "Homework 11",
-    "type": "作业",
-    "due": "2026-07-31T15:59:59Z",
-    "remind_at": "2026-07-31T13:59:59+00:00",
     "reminded": false,
     "submitted": false
   }
