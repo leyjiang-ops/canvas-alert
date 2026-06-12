@@ -169,5 +169,17 @@
     "remind_at": "2026-07-31T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_414905": {
+    "id": "assignment_414905",
+    "raw_id": 414905,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "HW4",
+    "type": "作业",
+    "due": "2026-06-19T15:59:59Z",
+    "remind_at": "2026-06-19T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
