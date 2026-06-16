@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-16T18:15:44.883631+00:00"
+    "last_stream_check": "2026-06-16T18:21:11.081143+00:00"
   },
   "assignment_414325": {
     "id": "assignment_414325",
@@ -181,29 +181,5 @@
     "remind_at": "2026-07-31T13:59:59+00:00",
     "reminded": true,
     "submitted": true
-  },
-  "assignment_415204": {
-    "id": "assignment_415204",
-    "raw_id": 415204,
-    "course_id": 89351,
-    "course": "形势与政策",
-    "title": "上海交通大学“形势与政策”课2026学年春季学期期末考核试题",
-    "type": "作业",
-    "due": "2026-06-21T15:59:59Z",
-    "remind_at": "2026-06-21T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
-  },
-  "assignment_415199": {
-    "id": "assignment_415199",
-    "raw_id": 415199,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "WA4",
-    "type": "作业",
-    "due": "2026-06-22T15:59:59Z",
-    "remind_at": "2026-06-22T13:59:59+00:00",
-    "reminded": false,
-    "submitted": false
   }
 }
