@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-16T15:56:13.972217+00:00"
+    "last_stream_check": "2026-06-16T16:01:18.607416+00:00"
   },
   "assignment_412444": {
     "id": "assignment_412444",
@@ -13,18 +13,6 @@
     "remind_at": "2026-06-21T13:59:59+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_413440": {
-    "id": "assignment_413440",
-    "raw_id": 413440,
-    "course_id": 86626,
-    "course": "信息素养与实践",
-    "title": "期末小组作业：文献调研报告",
-    "type": "作业",
-    "due": "2026-06-16T15:59:59Z",
-    "remind_at": "2026-06-16T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_393715": {
     "id": "assignment_393715",
