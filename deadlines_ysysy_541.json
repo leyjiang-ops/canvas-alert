@@ -49,5 +49,17 @@
     "remind_at": "2026-06-21T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_415430": {
+    "id": "assignment_415430",
+    "raw_id": 415430,
+    "course_id": 87738,
+    "course": "能源材料基础",
+    "title": "Homework 6",
+    "type": "作业",
+    "due": "2026-06-24T15:59:59Z",
+    "remind_at": "2026-06-24T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
