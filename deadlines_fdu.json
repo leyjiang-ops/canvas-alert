@@ -95,7 +95,7 @@
     "type": "作业",
     "due": "2026-06-18T15:59:59Z",
     "remind_at": "2026-06-18T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": false
   },
   "assignment_132480": {
