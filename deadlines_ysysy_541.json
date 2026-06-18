@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-18T15:56:03.580848+00:00"
+    "last_stream_check": "2026-06-18T16:01:46.986379+00:00"
   },
   "assignment_412444": {
     "id": "assignment_412444",
@@ -24,18 +24,6 @@
     "due": "2026-07-05T15:59:00Z",
     "remind_at": "2026-07-05T13:59:00+00:00",
     "reminded": false,
-    "submitted": false
-  },
-  "assignment_414912": {
-    "id": "assignment_414912",
-    "raw_id": 414912,
-    "course_id": 87049,
-    "course": "大学物理(A类）（3）",
-    "title": "第七次作业",
-    "type": "作业",
-    "due": "2026-06-18T15:59:59Z",
-    "remind_at": "2026-06-18T13:59:59+00:00",
-    "reminded": true,
     "submitted": false
   },
   "assignment_415054": {
