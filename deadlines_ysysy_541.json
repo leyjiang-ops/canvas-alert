@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-21T13:55:40.972980+00:00"
+    "last_stream_check": "2026-06-21T14:00:36.796293+00:00"
   },
   "assignment_412444": {
     "id": "assignment_412444",
@@ -11,7 +11,7 @@
     "type": "作业",
     "due": "2026-06-21T15:59:59Z",
     "remind_at": "2026-06-21T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_393715": {
@@ -35,7 +35,7 @@
     "type": "作业",
     "due": "2026-06-21T15:59:59Z",
     "remind_at": "2026-06-21T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_415430": {
