@@ -1,18 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-21T15:55:36.454580+00:00"
-  },
-  "assignment_412444": {
-    "id": "assignment_412444",
-    "raw_id": 412444,
-    "course_id": 87136,
-    "course": "电工学实验",
-    "title": "大作业报告",
-    "type": "作业",
-    "due": "2026-06-21T15:59:59Z",
-    "remind_at": "2026-06-21T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
+    "last_stream_check": "2026-06-21T16:00:34.642251+00:00"
   },
   "assignment_393715": {
     "id": "assignment_393715",
@@ -25,18 +13,6 @@
     "remind_at": "2026-07-05T13:59:00+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_415054": {
-    "id": "assignment_415054",
-    "raw_id": 415054,
-    "course_id": 89372,
-    "course": "形势与政策",
-    "title": "期末考核",
-    "type": "作业",
-    "due": "2026-06-21T15:59:59Z",
-    "remind_at": "2026-06-21T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_415430": {
     "id": "assignment_415430",
