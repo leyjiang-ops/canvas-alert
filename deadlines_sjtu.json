@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-22T13:55:41.654410+00:00"
+    "last_stream_check": "2026-06-22T14:00:49.678582+00:00"
   },
   "assignment_414286": {
     "id": "assignment_414286",
@@ -167,7 +167,7 @@
     "type": "作业",
     "due": "2026-06-22T15:59:59Z",
     "remind_at": "2026-06-22T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_415747": {
