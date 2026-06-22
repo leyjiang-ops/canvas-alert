@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-06-22T15:55:44.579135+00:00"
+    "last_stream_check": "2026-06-22T16:00:45.099219+00:00"
   },
   "assignment_414286": {
     "id": "assignment_414286",
@@ -155,18 +155,6 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "assignment_415199": {
-    "id": "assignment_415199",
-    "raw_id": 415199,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "WA4",
-    "type": "作业",
-    "due": "2026-06-22T15:59:59Z",
-    "remind_at": "2026-06-22T13:59:59+00:00",
     "reminded": true,
     "submitted": true
   },
