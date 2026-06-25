@@ -192,7 +192,7 @@
     "due": "2026-08-06T00:00:00Z",
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "quiz_78026": {
     "id": "quiz_78026",
