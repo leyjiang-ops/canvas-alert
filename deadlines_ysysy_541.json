@@ -13,5 +13,17 @@
     "remind_at": "2026-07-05T13:59:00+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_416475": {
+    "id": "assignment_416475",
+    "raw_id": 416475,
+    "course_id": 87738,
+    "course": "能源材料基础",
+    "title": "Final Exam",
+    "type": "作业",
+    "due": "2026-07-02T15:59:59Z",
+    "remind_at": "2026-07-02T13:59:59+00:00",
+    "reminded": true,
+    "submitted": true
   }
 }
