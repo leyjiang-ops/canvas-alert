@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-07-03T15:55:42.304330+00:00"
+    "last_stream_check": "2026-07-03T16:00:48.350659+00:00"
   },
   "assignment_411230": {
     "id": "assignment_411230",
@@ -217,18 +217,6 @@
     "remind_at": "2026-07-10T13:59:59+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_416074": {
-    "id": "assignment_416074",
-    "raw_id": 416074,
-    "course_id": 92352,
-    "course": "MATH2030JSU2026",
-    "title": "HW5",
-    "type": "作业",
-    "due": "2026-07-03T15:59:59Z",
-    "remind_at": "2026-07-03T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_416298": {
     "id": "assignment_416298",
