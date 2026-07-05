@@ -1,17 +1,5 @@
 {
   "_meta": {
-    "last_stream_check": "2026-07-05T15:55:52.436648+00:00"
-  },
-  "assignment_393715": {
-    "id": "assignment_393715",
-    "raw_id": 393715,
-    "course_id": 87742,
-    "course": "信号与系统设计",
-    "title": "Lab5",
-    "type": "作业",
-    "due": "2026-07-05T15:59:00Z",
-    "remind_at": "2026-07-05T13:59:00+00:00",
-    "reminded": true,
-    "submitted": true
+    "last_stream_check": "2026-07-05T16:01:02.612084+00:00"
   }
 }
