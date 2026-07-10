@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-07-10T15:55:18.431538+00:00"
+    "last_stream_check": "2026-07-10T16:00:20.609694+00:00"
   },
   "assignment_411230": {
     "id": "assignment_411230",
@@ -193,30 +193,6 @@
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_416078": {
-    "id": "assignment_416078",
-    "raw_id": 416078,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "PA3_code",
-    "type": "作业",
-    "due": "2026-07-10T15:59:59Z",
-    "remind_at": "2026-07-10T13:59:59+00:00",
-    "reminded": true,
-    "submitted": false
-  },
-  "assignment_416079": {
-    "id": "assignment_416079",
-    "raw_id": 416079,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "PA3_report",
-    "type": "作业",
-    "due": "2026-07-10T15:59:59Z",
-    "remind_at": "2026-07-10T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_416878": {
     "id": "assignment_416878",
