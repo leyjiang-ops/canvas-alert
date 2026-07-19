@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-07-19T15:55:22.241465+00:00"
+    "last_stream_check": "2026-07-19T16:00:19.517943+00:00"
   },
   "assignment_411230": {
     "id": "assignment_411230",
@@ -193,18 +193,6 @@
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_416878": {
-    "id": "assignment_416878",
-    "raw_id": 416878,
-    "course_id": 92366,
-    "course": "ECE2810JSU2026",
-    "title": "WA6",
-    "type": "作业",
-    "due": "2026-07-19T15:59:59Z",
-    "remind_at": "2026-07-19T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_417293": {
     "id": "assignment_417293",
