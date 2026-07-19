@@ -180,7 +180,7 @@
     "due": "2026-08-06T00:00:00Z",
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "quiz_78026": {
     "id": "quiz_78026",
@@ -192,7 +192,7 @@
     "due": "2026-08-06T00:00:00Z",
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "assignment_416878": {
     "id": "assignment_416878",
@@ -204,7 +204,7 @@
     "due": "2026-07-19T15:59:59Z",
     "remind_at": "2026-07-19T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_417293": {
     "id": "assignment_417293",
