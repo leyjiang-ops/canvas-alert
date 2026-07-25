@@ -229,5 +229,17 @@
     "remind_at": "2026-08-06T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_417466": {
+    "id": "assignment_417466",
+    "raw_id": 417466,
+    "course_id": 92366,
+    "course": "ECE2810JSU2026",
+    "title": "WA8",
+    "type": "作业",
+    "due": "2026-08-04T15:59:59Z",
+    "remind_at": "2026-08-04T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
