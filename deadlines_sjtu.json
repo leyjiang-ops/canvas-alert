@@ -253,5 +253,77 @@
     "remind_at": "2026-07-31T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_415749": {
+    "id": "assignment_415749",
+    "raw_id": 415749,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "Quiz Part III",
+    "type": "作业",
+    "due": "2026-08-06T00:00:00Z",
+    "remind_at": "2026-08-05T22:00:00+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "assignment_415750": {
+    "id": "assignment_415750",
+    "raw_id": 415750,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "Quiz Part IV",
+    "type": "作业",
+    "due": "2026-08-06T00:00:00Z",
+    "remind_at": "2026-08-05T22:00:00+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "assignment_415751": {
+    "id": "assignment_415751",
+    "raw_id": 415751,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "Quiz Part V",
+    "type": "作业",
+    "due": "2026-08-06T00:00:00Z",
+    "remind_at": "2026-08-05T22:00:00+00:00",
+    "reminded": true,
+    "submitted": true
+  },
+  "quiz_78027": {
+    "id": "quiz_78027",
+    "raw_id": 78027,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "Quiz Part III",
+    "type": "Quiz",
+    "due": "2026-08-06T00:00:00Z",
+    "remind_at": "2026-08-05T22:00:00+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "quiz_78028": {
+    "id": "quiz_78028",
+    "raw_id": 78028,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "Quiz Part IV",
+    "type": "Quiz",
+    "due": "2026-08-06T00:00:00Z",
+    "remind_at": "2026-08-05T22:00:00+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "quiz_78029": {
+    "id": "quiz_78029",
+    "raw_id": 78029,
+    "course_id": 92352,
+    "course": "MATH2030JSU2026",
+    "title": "Quiz Part V",
+    "type": "Quiz",
+    "due": "2026-08-06T00:00:00Z",
+    "remind_at": "2026-08-05T22:00:00+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
