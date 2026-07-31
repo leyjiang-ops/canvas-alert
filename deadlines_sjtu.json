@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-07-31T13:55:46.155966+00:00"
+    "last_stream_check": "2026-07-31T14:00:55.531677+00:00"
   },
   "assignment_411230": {
     "id": "assignment_411230",
@@ -47,7 +47,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414729": {
@@ -59,7 +59,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414730": {
@@ -71,7 +71,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414731": {
@@ -83,7 +83,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414732": {
@@ -95,7 +95,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414733": {
@@ -107,7 +107,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414734": {
@@ -119,7 +119,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414735": {
@@ -131,7 +131,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_414189": {
@@ -215,7 +215,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_417443": {
@@ -251,7 +251,7 @@
     "type": "作业",
     "due": "2026-07-31T15:59:59Z",
     "remind_at": "2026-07-31T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": false
   },
   "assignment_415749": {
