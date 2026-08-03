@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-08-03T09:45:48.201837+00:00"
+    "last_stream_check": "2026-08-03T09:40:54.620279+00:00"
   },
   "assignment_415747": {
     "id": "assignment_415747",
@@ -36,7 +36,7 @@
     "due": "2026-08-06T00:00:00Z",
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "quiz_78026": {
     "id": "quiz_78026",
@@ -48,7 +48,7 @@
     "due": "2026-08-06T00:00:00Z",
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "assignment_417443": {
     "id": "assignment_417443",
@@ -72,7 +72,7 @@
     "due": "2026-08-04T15:59:59Z",
     "remind_at": "2026-08-04T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_415749": {
     "id": "assignment_415749",
@@ -120,7 +120,7 @@
     "due": "2026-08-06T00:00:00Z",
     "remind_at": "2026-08-05T22:00:00+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "quiz_78028": {
     "id": "quiz_78028",
