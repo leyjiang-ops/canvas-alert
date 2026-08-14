@@ -1,5 +1,53 @@
 {
   "_meta": {
     "last_stream_check": "2026-08-14T13:05:34.239031+00:00"
+  },
+  "assignment_418533": {
+    "id": "assignment_418533",
+    "raw_id": 418533,
+    "course_id": 86593,
+    "course": "2024-Entry Undergraduate Students",
+    "title": "作业一：2024级本科生发展性评估 学生申请表提交",
+    "type": "作业",
+    "due": "2026-09-20T15:59:59Z",
+    "remind_at": "2026-09-20T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_418534": {
+    "id": "assignment_418534",
+    "raw_id": 418534,
+    "course_id": 86593,
+    "course": "2024-Entry Undergraduate Students",
+    "title": "作业二：现场答辩PPT提交",
+    "type": "作业",
+    "due": "2026-09-20T15:59:59Z",
+    "remind_at": "2026-09-20T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_418535": {
+    "id": "assignment_418535",
+    "raw_id": 418535,
+    "course_id": 86593,
+    "course": "2024-Entry Undergraduate Students",
+    "title": "作业三：现场答辩PPT的PDF版本提交",
+    "type": "作业",
+    "due": "2026-09-20T15:59:59Z",
+    "remind_at": "2026-09-20T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "assignment_418536": {
+    "id": "assignment_418536",
+    "raw_id": 418536,
+    "course_id": 86593,
+    "course": "2024-Entry Undergraduate Students",
+    "title": "作业四：佐证材料提交（选交）",
+    "type": "作业",
+    "due": "2026-09-20T15:59:59Z",
+    "remind_at": "2026-09-20T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
