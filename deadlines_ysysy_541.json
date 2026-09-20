@@ -12,7 +12,7 @@
     "due": "2026-09-20T15:59:59Z",
     "remind_at": "2026-09-20T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_418534": {
     "id": "assignment_418534",
@@ -24,7 +24,7 @@
     "due": "2026-09-20T15:59:59Z",
     "remind_at": "2026-09-20T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_418535": {
     "id": "assignment_418535",
@@ -36,7 +36,7 @@
     "due": "2026-09-20T15:59:59Z",
     "remind_at": "2026-09-20T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_418536": {
     "id": "assignment_418536",
