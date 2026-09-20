@@ -49,5 +49,17 @@
     "remind_at": "2026-09-20T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_428945": {
+    "id": "assignment_428945",
+    "raw_id": 428945,
+    "course_id": 94123,
+    "course": "能源实验I",
+    "title": "Short Essay",
+    "type": "作业",
+    "due": "2026-09-30T15:59:59Z",
+    "remind_at": "2026-09-30T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
