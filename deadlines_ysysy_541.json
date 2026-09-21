@@ -13,5 +13,17 @@
     "remind_at": "2026-09-30T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_429464": {
+    "id": "assignment_429464",
+    "raw_id": 429464,
+    "course_id": 93029,
+    "course": "计算机科学中的伦理问题",
+    "title": "期中：音乐剧《悲惨世界》的伦理思考及思维实验",
+    "type": "作业",
+    "due": "2026-10-11T15:59:59Z",
+    "remind_at": "2026-10-11T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
