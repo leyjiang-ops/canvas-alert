@@ -25,5 +25,17 @@
     "remind_at": "2026-10-11T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_429708": {
+    "id": "assignment_429708",
+    "raw_id": 429708,
+    "course_id": 94075,
+    "course": "电化学基础与应用",
+    "title": "Homework 1",
+    "type": "作业",
+    "due": "2026-09-30T15:59:59Z",
+    "remind_at": "2026-09-30T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
