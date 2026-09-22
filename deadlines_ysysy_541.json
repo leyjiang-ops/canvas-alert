@@ -12,7 +12,7 @@
     "due": "2026-09-30T15:59:59Z",
     "remind_at": "2026-09-30T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_429464": {
     "id": "assignment_429464",
