@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-10-23T15:56:05.479289+00:00"
+    "last_stream_check": "2026-10-23T16:01:08.035919+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -25,18 +25,6 @@
     "remind_at": "2026-10-30T13:59:59+00:00",
     "reminded": false,
     "submitted": false
-  },
-  "assignment_433882": {
-    "id": "assignment_433882",
-    "raw_id": 433882,
-    "course_id": 94075,
-    "course": "电化学基础与应用",
-    "title": "Homework 2",
-    "type": "作业",
-    "due": "2026-10-23T15:59:59Z",
-    "remind_at": "2026-10-23T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
   },
   "assignment_434122": {
     "id": "assignment_434122",
