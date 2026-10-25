@@ -36,7 +36,7 @@
     "due": "2026-10-26T01:00:00Z",
     "remind_at": "2026-10-25T23:00:00+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_434543": {
     "id": "assignment_434543",
@@ -48,7 +48,7 @@
     "due": "2026-10-26T01:00:00Z",
     "remind_at": "2026-10-25T23:00:00+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "assignment_434951": {
     "id": "assignment_434951",
