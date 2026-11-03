@@ -37,5 +37,17 @@
     "remind_at": "2026-11-03T13:59:59+00:00",
     "reminded": false,
     "submitted": true
+  },
+  "quiz_82303": {
+    "id": "quiz_82303",
+    "raw_id": 82303,
+    "course_id": 94144,
+    "course": "自动控制原理",
+    "title": "课堂调查",
+    "type": "Quiz",
+    "due": "2026-11-10T15:59:59Z",
+    "remind_at": "2026-11-10T13:59:59+00:00",
+    "reminded": false,
+    "submitted": true
   }
 }
