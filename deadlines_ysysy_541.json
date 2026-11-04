@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-04T15:55:45.381544+00:00"
+    "last_stream_check": "2026-11-04T16:00:46.590609+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -13,18 +13,6 @@
     "remind_at": "2026-11-22T13:59:59+00:00",
     "reminded": false,
     "submitted": true
-  },
-  "assignment_434951": {
-    "id": "assignment_434951",
-    "raw_id": 434951,
-    "course_id": 93983,
-    "course": "新型电力系统",
-    "title": "Homework 3",
-    "type": "作业",
-    "due": "2026-11-04T15:59:59Z",
-    "remind_at": "2026-11-04T13:59:59+00:00",
-    "reminded": true,
-    "submitted": false
   },
   "quiz_82303": {
     "id": "quiz_82303",
