@@ -49,5 +49,29 @@
     "remind_at": "2026-11-18T13:59:59+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_438651": {
+    "id": "assignment_438651",
+    "raw_id": 438651,
+    "course_id": 94123,
+    "course": "能源实验I",
+    "title": "Pre-lab Assignment 3",
+    "type": "作业",
+    "due": "2026-11-11T00:00:00Z",
+    "remind_at": "2026-11-10T22:00:00+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "quiz_82544": {
+    "id": "quiz_82544",
+    "raw_id": 82544,
+    "course_id": 94123,
+    "course": "能源实验I",
+    "title": "Pre-lab Assignment 3",
+    "type": "Quiz",
+    "due": "2026-11-11T00:00:00Z",
+    "remind_at": "2026-11-10T22:00:00+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
