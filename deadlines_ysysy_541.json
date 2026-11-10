@@ -24,7 +24,7 @@
     "due": "2026-11-10T15:59:59Z",
     "remind_at": "2026-11-10T13:59:59+00:00",
     "reminded": true,
-    "submitted": true
+    "submitted": false
   },
   "assignment_437936": {
     "id": "assignment_437936",
