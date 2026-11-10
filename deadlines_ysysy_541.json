@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-10T13:55:45.828722+00:00"
+    "last_stream_check": "2026-11-10T14:00:44.544889+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -23,7 +23,7 @@
     "type": "Quiz",
     "due": "2026-11-10T15:59:59Z",
     "remind_at": "2026-11-10T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "assignment_437936": {
