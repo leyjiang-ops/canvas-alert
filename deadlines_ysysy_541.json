@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-10T15:55:43.512910+00:00"
+    "last_stream_check": "2026-11-10T16:00:46.384035+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -13,18 +13,6 @@
     "remind_at": "2026-11-22T13:59:59+00:00",
     "reminded": false,
     "submitted": true
-  },
-  "quiz_82303": {
-    "id": "quiz_82303",
-    "raw_id": 82303,
-    "course_id": 94144,
-    "course": "自动控制原理",
-    "title": "课堂调查",
-    "type": "Quiz",
-    "due": "2026-11-10T15:59:59Z",
-    "remind_at": "2026-11-10T13:59:59+00:00",
-    "reminded": true,
-    "submitted": false
   },
   "assignment_437936": {
     "id": "assignment_437936",
