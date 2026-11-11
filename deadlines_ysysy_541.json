@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-10T23:55:41.135691+00:00"
+    "last_stream_check": "2026-11-11T00:01:01.091153+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -36,30 +36,6 @@
     "due": "2026-11-18T15:59:59Z",
     "remind_at": "2026-11-18T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
-  },
-  "assignment_438651": {
-    "id": "assignment_438651",
-    "raw_id": 438651,
-    "course_id": 94123,
-    "course": "能源实验I",
-    "title": "Pre-lab Assignment 3",
-    "type": "作业",
-    "due": "2026-11-11T00:00:00Z",
-    "remind_at": "2026-11-10T22:00:00+00:00",
-    "reminded": true,
-    "submitted": true
-  },
-  "quiz_82544": {
-    "id": "quiz_82544",
-    "raw_id": 82544,
-    "course_id": 94123,
-    "course": "能源实验I",
-    "title": "Pre-lab Assignment 3",
-    "type": "Quiz",
-    "due": "2026-11-11T00:00:00Z",
-    "remind_at": "2026-11-10T22:00:00+00:00",
-    "reminded": true,
     "submitted": false
   }
 }
