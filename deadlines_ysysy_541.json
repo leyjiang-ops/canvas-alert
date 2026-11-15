@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-15T15:56:17.648377+00:00"
+    "last_stream_check": "2026-11-15T16:01:17.345167+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -12,18 +12,6 @@
     "due": "2026-11-22T15:59:59Z",
     "remind_at": "2026-11-22T13:59:59+00:00",
     "reminded": false,
-    "submitted": true
-  },
-  "assignment_437936": {
-    "id": "assignment_437936",
-    "raw_id": 437936,
-    "course_id": 93029,
-    "course": "计算机科学中的伦理问题",
-    "title": "个人日常参与 - 材料提交点",
-    "type": "作业",
-    "due": "2026-11-15T15:59:59Z",
-    "remind_at": "2026-11-15T13:59:59+00:00",
-    "reminded": true,
     "submitted": true
   },
   "assignment_438427": {
