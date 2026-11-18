@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-18T09:35:40.399473+00:00"
+    "last_stream_check": "2026-11-18T09:40:45.159720+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -24,7 +24,7 @@
     "due": "2026-11-18T15:59:59Z",
     "remind_at": "2026-11-18T13:59:59+00:00",
     "reminded": false,
-    "submitted": true
+    "submitted": false
   },
   "assignment_438586": {
     "id": "assignment_438586",
