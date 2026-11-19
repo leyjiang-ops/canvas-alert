@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-19T15:56:00.295229+00:00"
+    "last_stream_check": "2026-11-19T16:00:52.745978+00:00"
   },
   "assignment_433423": {
     "id": "assignment_433423",
@@ -12,18 +12,6 @@
     "due": "2026-11-22T15:59:59Z",
     "remind_at": "2026-11-22T13:59:59+00:00",
     "reminded": false,
-    "submitted": true
-  },
-  "assignment_438586": {
-    "id": "assignment_438586",
-    "raw_id": 438586,
-    "course_id": 93983,
-    "course": "新型电力系统",
-    "title": "Lab2",
-    "type": "作业",
-    "due": "2026-11-19T15:59:59Z",
-    "remind_at": "2026-11-19T13:59:59+00:00",
-    "reminded": true,
     "submitted": true
   },
   "assignment_440211": {
