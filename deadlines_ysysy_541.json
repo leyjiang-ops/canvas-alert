@@ -36,7 +36,7 @@
     "due": "2026-11-25T00:00:00Z",
     "remind_at": "2026-11-24T22:00:00+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "quiz_82837": {
     "id": "quiz_82837",
@@ -47,6 +47,18 @@
     "type": "Quiz",
     "due": "2026-11-25T00:00:00Z",
     "remind_at": "2026-11-24T22:00:00+00:00",
+    "reminded": false,
+    "submitted": false
+  },
+  "quiz_82848": {
+    "id": "quiz_82848",
+    "raw_id": 82848,
+    "course_id": 94144,
+    "course": "自动控制原理",
+    "title": "Survey on the Final Lab Session",
+    "type": "Quiz",
+    "due": "2026-11-29T15:59:00Z",
+    "remind_at": "2026-11-29T13:59:00+00:00",
     "reminded": false,
     "submitted": false
   }
