@@ -61,5 +61,17 @@
     "remind_at": "2026-11-29T13:59:00+00:00",
     "reminded": false,
     "submitted": false
+  },
+  "assignment_441440": {
+    "id": "assignment_441440",
+    "raw_id": 441440,
+    "course_id": 93997,
+    "course": "智能电动化交通",
+    "title": "Sign up to a group!",
+    "type": "作业",
+    "due": "2026-11-27T15:59:59Z",
+    "remind_at": "2026-11-27T13:59:59+00:00",
+    "reminded": false,
+    "submitted": false
   }
 }
