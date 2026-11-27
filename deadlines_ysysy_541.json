@@ -12,7 +12,7 @@
     "due": "2026-11-27T15:59:59Z",
     "remind_at": "2026-11-27T13:59:59+00:00",
     "reminded": false,
-    "submitted": false
+    "submitted": true
   },
   "quiz_82848": {
     "id": "quiz_82848",
