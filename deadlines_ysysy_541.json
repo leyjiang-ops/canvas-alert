@@ -1,18 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-27T15:56:16.754970+00:00"
-  },
-  "assignment_440221": {
-    "id": "assignment_440221",
-    "raw_id": 440221,
-    "course_id": 94144,
-    "course": "自动控制原理",
-    "title": "Lab2 (Position and Vilocity Control)",
-    "type": "作业",
-    "due": "2026-11-27T15:59:59Z",
-    "remind_at": "2026-11-27T13:59:59+00:00",
-    "reminded": true,
-    "submitted": true
+    "last_stream_check": "2026-11-27T16:01:11.814891+00:00"
   },
   "quiz_82848": {
     "id": "quiz_82848",
@@ -24,18 +12,6 @@
     "due": "2026-11-29T15:59:00Z",
     "remind_at": "2026-11-29T13:59:00+00:00",
     "reminded": false,
-    "submitted": false
-  },
-  "assignment_441440": {
-    "id": "assignment_441440",
-    "raw_id": 441440,
-    "course_id": 93997,
-    "course": "智能电动化交通",
-    "title": "Sign up to a group!",
-    "type": "作业",
-    "due": "2026-11-27T15:59:59Z",
-    "remind_at": "2026-11-27T13:59:59+00:00",
-    "reminded": true,
     "submitted": false
   },
   "assignment_441846": {
