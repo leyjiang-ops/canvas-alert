@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "last_stream_check": "2026-11-27T13:56:17.469633+00:00"
+    "last_stream_check": "2026-11-27T14:01:19.812004+00:00"
   },
   "assignment_440221": {
     "id": "assignment_440221",
@@ -11,7 +11,7 @@
     "type": "作业",
     "due": "2026-11-27T15:59:59Z",
     "remind_at": "2026-11-27T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": true
   },
   "quiz_82848": {
@@ -35,7 +35,7 @@
     "type": "作业",
     "due": "2026-11-27T15:59:59Z",
     "remind_at": "2026-11-27T13:59:59+00:00",
-    "reminded": false,
+    "reminded": true,
     "submitted": false
   },
   "assignment_441846": {
